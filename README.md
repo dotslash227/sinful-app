@@ -77,8 +77,8 @@ Assuming you have all the requirements installed, you can setup and run the proj
 
 - `yarn install` to install the dependencies
 - create your [configuration file `App/Config/index.js`](App/Config) from `index.dev.js` (in you are in dev environment) and fill the missing values
-- `react-native run-android` to run the Android application (remember to start a simulator or connect an Android phone)
-- `react-native run-ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
+- `yarn run android` to run the Android application (remember to start a simulator or connect an Android phone)
+- `yarn run ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
 
 ## Useful documentation
 
