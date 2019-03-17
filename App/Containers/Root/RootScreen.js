@@ -8,6 +8,10 @@ import SplashScreen from 'App/Containers/SplashScreen/SplashScreen'
 import { connect } from 'react-redux'
 import StartupActions from 'App/Stores/Startup/Actions'
 
+// Login Screens:
+import LoginScreen from 'App/Containers/Login/LoginScreen/LoginScreen'
+import LoginOTPScreen from 'App/Containers/Login/LoginOTPScreen/LoginOTPScreen'
+
 /**
  * The root screen contains the application's navigation.
  *
@@ -21,6 +25,8 @@ const AppNav = createStackNavigator(
     // The main application screen is our "ExampleScreen". Feel free to replace it with your
     // own screen and remove the example.
     MainScreen: ExampleScreen,
+    LoginScreen: LoginScreen,
+    LoginOTPScreen: LoginOTPScreen,
   },
   {
     // By default the application will show the splash screen

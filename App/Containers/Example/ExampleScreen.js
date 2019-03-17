@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import ExampleActions from 'App/Stores/Example/Actions'
 import { liveInEurope } from 'App/Stores/Example/Selectors'
 import Style from './ExampleScreenStyle'
+import { Examples } from '@shoutem/ui'
 
 /**
  * This is an example of a container component.
@@ -36,20 +37,7 @@ class ExampleScreen extends React.Component {
         (this.props.liveInEurope ? 'I live in Europe !' : "I don't live in Europe.")
     }
 
-    return (
-      <View style={Style.container}>
-        <Text style={Style.title}>TheCodingMachine boilerplate</Text>
-        <Text style={Style.text}>To get started, edit App.js</Text>
-        <Text style={Style.instructions}>{instructions}</Text>
-        <Text style={Style.loading}>{isLoading}</Text>
-        {user && !error ? (
-          <Text style={Style.result}>{result}</Text>
-        ) : (
-          <Text style={Style.error}>{error}</Text>
-        )}
-        <Button onPress={this.props.fetchUser} title="Refresh" />
-      </View>
-    )
+    return <Examples />
   }
 }
 
