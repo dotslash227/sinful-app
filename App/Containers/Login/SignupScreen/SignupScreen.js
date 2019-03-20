@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Image, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
+import {Image, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, FlatList} from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import {Button, Container, Grid, Col} from 'native-base';
+import {Button, Container, Grid, Col, Row} from 'native-base';
 
 class MomoObject extends Component{
     constructor(props){
@@ -9,12 +9,11 @@ class MomoObject extends Component{
     }
     
     render(){
-        return(
-            <Col>
-                <TouchableOpacity onPress={this.props.onPress}>
-                    <Image source={{uri:"https://www.wearegurgaon.com/wp-content/uploads/2017/09/Tandoori-Momos-Nazims-Gurgaon.jpg"}} style={styles.momoPic} />
-                </TouchableOpacity>                     
-            </Col>
+        return(            
+            <TouchableOpacity onPress={this.props.onPress}>
+                <Image source={{uri:"https://www.wearegurgaon.com/wp-content/uploads/2017/09/Tandoori-Momos-Nazims-Gurgaon.jpg"}} style={this.props.style} />
+                <Text style={styles.momoName}>{this.props.name}</Text>
+            </TouchableOpacity>                                 
         )
     }
 }
@@ -45,18 +44,17 @@ export default class SignupScreen extends Component {
 
         if (currentState.selectedMomos.includes(name)){
             currentState.selectedMomos.pop(name);
-            currentState.momoCount -= 1;
+            currentState.momoCount -= 1;            
         }
         else{
             if(currentState.momoCount >=3){
-                alert("Only upto 3 momos can be selected, choose a biryani instead using our BiryaniNow App");
+                alert("Only upto 3 momos can be selected, choose a biryani instead using our BiryaniNow App");                
             }
             else{
                 currentState.selectedMomos.push(name);
-                currentState.momoCount += 1;
+                currentState.momoCount += 1;                
             }
-        }
-
+        }    
         this.setState(currentState);           
     }
 
@@ -64,44 +62,57 @@ export default class SignupScreen extends Component {
 
         let momoList = [
             {
-                name: "Steamed Chicken Momos",
+                name: "Steamed Chicken",
                 id: "steamed-chicken",
                 imageUrl: "https://www.delhinerds.com/logo.png"
             },
             {
-                name: "Tandoori Chicken Momos",
+                name: "Fried Chicken",
                 id: "fried-chicken",
                 imageUrl: "https://www.delhinerds.com/logo.png"
             },
             {
-                name: "Tandoori Chicken Momos",
+                name: "Tandoori Chicken",
                 id: "tandoori-chicken",
                 imageUrl: "https://www.delhinerds.com/logo.png"
             },
             {
-                name: "Tandoori Chicken Momos",
+                name: "Steamed Veg",
                 id: "steamed-veg",
                 imageUrl: "https://www.delhinerds.com/logo.png"
             },
             {
-                name: "Tandoori Chicken Momos",
+                name: "Fried Veg",
                 id: "fried-veg",
                 imageUrl: "https://www.delhinerds.com/logo.png"
+            },
+            {
+                name: "Tandoori Veg",
+                id: "tandoori-veg",
+                imageUrl: "https://www.delhinerds.com/logo.png"
             }
+        ]
 
-        ];
-                
-        return momoList.map((item, key)=>{
-                return(                    
-                    <MomoObject onPress={()=>this.momoCounter(item.id)} />                
-                )
-            }        
-        )
+        let counter = 1;
+        let displayUnit = null
+
+        return(
+            <FlatList
+                numColumns = {3}
+                data = {momoList}
+                extraData = {this.state}
+                renderItem = {({item})=>                    
+                    <MomoObject id={item.id} name={item.name} onPress={
+                        ()=>this.momoCounter(item.id)
+                    } style={(this.state.selectedMomos.includes(item.id))?styles.momoPicSelected:styles.momoPic} />
+                }
+            />
+        );                        
     }
 
     render(){
         return(
-            <ScrollView>
+            
                 <Container style={styles.Screen}>
                     <View style={{marginBottom:30}}>
                         <Text style={{color:"teal", fontWeight: "bold", textAlign: "justify"}}>
@@ -141,7 +152,7 @@ export default class SignupScreen extends Component {
                     </Button>
 
                 </Container>
-            </ScrollView>
+            
         )
     }
 }
@@ -169,20 +180,24 @@ const styles = StyleSheet.create({
         color: "#B71C1C",
         marginBottom: 20
     },
-    nextButton: {
-        
-    },
     momoPic: {
-        width: 100,
-        height: 100,
-        marginRight: 15                
+        width: 105,
+        height: 105,
+        marginRight: 15,
+        marginTop: 12
     },
     momoPicSelected: {
-        width: 100,
-        height: 100,
+        width: 105,
+        height: 105,
         marginRight: 15,
         borderWidth: 2,
         borderColor: "red",
-        padding: 10
+        padding: 10,
+        marginTop: 12
+    },
+    momoName:{
+        fontSize: 11,
+        textAlign: "justify",
+        color: "teal"
     }
 })
