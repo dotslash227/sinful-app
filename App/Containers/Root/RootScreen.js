@@ -11,6 +11,7 @@ import StartupActions from 'App/Stores/Startup/Actions'
 // Login Screens:
 import LoginScreen from 'App/Containers/Login/LoginScreen/LoginScreen'
 import LoginOTPScreen from 'App/Containers/Login/LoginOTPScreen/LoginOTPScreen'
+import SignupScreen from 'App/Containers/Login/SignupScreen/SignupScreen'
 
 /**
  * The root screen contains the application's navigation.
@@ -27,10 +28,11 @@ const AppNav = createStackNavigator(
     MainScreen: ExampleScreen,
     LoginScreen: LoginScreen,
     LoginOTPScreen: LoginOTPScreen,
+    Signup: SignupScreen,
   },
   {
     // By default the application will show the splash screen
-    initialRouteName: 'SplashScreen',
+    initialRouteName: "SplashScreen",
     // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
     headerMode: 'none',
   }

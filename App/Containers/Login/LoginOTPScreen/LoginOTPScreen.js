@@ -61,6 +61,10 @@ export default class LoginOTPScreen extends Component {
     }
   }
 
+  goToSignup(){
+    NavigationService.navigate("Signup")
+  }
+
   render() {
 
     return (
@@ -78,12 +82,12 @@ export default class LoginOTPScreen extends Component {
           </TouchableHighlight>
         </View>
         <TextInput 
-          placeholder={"Enter OTP"}
+          placeholder={"Verify OTP"}
           style={styles.phoneNumber2} 
           placeholderTextColor="white"           
           onChangeText = { (text)=> {this.setState({otp:text})}}
         />
-        <Button styleName="secondary" style={styles.button}>
+        <Button styleName="secondary" style={styles.button} onPress={()=>this.goToSignup()}>
           <Text>Press to continue</Text>
         </Button>        
         </ImageBackground>
