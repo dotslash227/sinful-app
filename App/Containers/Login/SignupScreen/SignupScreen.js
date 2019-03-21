@@ -110,6 +110,13 @@ export default class SignupScreen extends Component {
         );                        
     }
 
+    goToAddressChooser(){
+        NavigationService.navigate("AddressChooser", {
+            fullName: this.state.fullName,
+            email: this.state.email
+        })
+    }
+
     render(){
         return(
             
@@ -147,7 +154,7 @@ export default class SignupScreen extends Component {
                         {this.renderMomoList()}
                     </Grid>                                                                 
 
-                    <Button style={styles.nextButton} disabled={!this.state.flag} block>
+                    <Button style={styles.nextButton} disabled={!this.state.flag} block onPress={()=>this.goToAddressChooser()}>
                         <Text style={{color:"white", fontWeight: "bold"}}>Next</Text>
                     </Button>
 

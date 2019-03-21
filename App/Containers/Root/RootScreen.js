@@ -12,6 +12,7 @@ import StartupActions from 'App/Stores/Startup/Actions'
 import LoginScreen from 'App/Containers/Login/LoginScreen/LoginScreen'
 import LoginOTPScreen from 'App/Containers/Login/LoginOTPScreen/LoginOTPScreen'
 import SignupScreen from 'App/Containers/Login/SignupScreen/SignupScreen'
+import AddressChooser from 'App/Containers/Login/AddressChooser/AddressChooser'
 
 /**
  * The root screen contains the application's navigation.
@@ -29,6 +30,7 @@ const AppNav = createStackNavigator(
     LoginScreen: LoginScreen,
     LoginOTPScreen: LoginOTPScreen,
     Signup: SignupScreen,
+    AddressChooser: AddressChooser
   },
   {
     // By default the application will show the splash screen
