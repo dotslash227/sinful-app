@@ -18,7 +18,10 @@ export class LocationBar extends Component{
                     this.props.locations.map((item,key)=>{
                         return(
                             <TouchableOpacity onPress={()=>this.props.onPress(item)} key={key}>
-                                <View style={styles.locationBar}><Text style={styles.locationText}>{item.primaryText}</Text></View>
+                                <View style={styles.locationBar}>
+                                    <Text style={styles.locationText}>{item.primaryText}</Text>
+                                    <Text style={styles.secondaryText}>{item.secondaryText}</Text>
+                                </View>
                             </TouchableOpacity>                            
                         )
                     })
@@ -66,6 +69,7 @@ export default class AddressChooser extends Component{
 
         RNGooglePlaces.getAutocompletePredictions(text, {
             country: "IN",
+            types: ["establishment", "geocode"],
             latitude: this.state.userLat,
             longitude: this.state.userLong,
             radius: 10
@@ -97,7 +101,6 @@ export default class AddressChooser extends Component{
                             <Label>Enter Locality with City</Label>
                             <Input
                                 onChangeText = {(text)=>{this.googlePlacesFunction(text)}}
-                                value={this.state.pickedLocation.primaryText}
                              />
                         </Item>
                     </Form>
@@ -121,6 +124,9 @@ export default class AddressChooser extends Component{
 }
 
 const styles = StyleSheet.create({
+    secondaryText:{
+        fontSize: 10
+    },
     hideBox:{
         display:"none"
     },
