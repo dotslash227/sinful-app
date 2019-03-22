@@ -44,7 +44,8 @@ export default class AddressChooser extends Component{
             userLong: null,
             locations : [],
             showLocations: false,
-            pickedLocation: ''
+            pickedLocation: '',
+            loading: true
         };        
     }
 
@@ -55,6 +56,7 @@ export default class AddressChooser extends Component{
                 userLat: result[0].location.latitude,
                 userLong: result[0].location.longitude
             })
+            this.setState({loading:false})
         })
         .catch((error)=>console.log(error.message))
     }
@@ -75,7 +77,7 @@ export default class AddressChooser extends Component{
             radius: 10
         })
         .then((results)=>{
-            this.setState({locations:results, showLocations:true});            
+            this.setState({locations:results, showLocations:true});
         })
         .catch((error)=>console.log(error.message))
 
@@ -83,42 +85,54 @@ export default class AddressChooser extends Component{
     }
     
     render(){
-        return(            
-            <Container style={styles.Screen}>
-                <View>
-                    <Text style={styles.HeaderText}>Hello {this.state.name}, we are almost done, we just need your delivery address and location</Text>
-                </View>                
-                
-                <View>
-                    <Form>
-                        <Item floatingLabel last style={styles.SearchBar}>
-                            <Label>Enter House Number</Label>
-                            <Input
-                                onChangeText = {(text)=>{this.setState({houseNumber:text})}}
-                             />
-                        </Item>
-                        <Item floatingLabel last style={styles.SearchBar}>
-                            <Label>Enter Locality with City</Label>
-                            <Input
-                                onChangeText = {(text)=>{this.googlePlacesFunction(text)}}
-                             />
-                        </Item>
-                    </Form>
 
-                    <View style={(this.state.showLocations)?[styles.locationsBox]:[styles.hideBox]}>
-                        <LocationBar locations={this.state.locations} onPress={(location)=>{this.locationPickerHandler(location)}} />
+        if(this.state.loading==true){
+            return(
+                <Text>Loading</Text>
+            )
+        }
+        else{
+            return(            
+                <Container style={styles.Screen}>
+                    <View>
+                        <Text style={styles.HeaderText}>Hello {this.state.name}, we are almost done, we just need your delivery address and location</Text>
                     </View>                
-                </View>                
-
-                <View style={styles.container}>
-                    <Text style={styles.containerText}>For Google Maps</Text>
-                </View>
-
-                <Button full disabled style={styles.nextButton}>
-                    <Text>Next</Text>
-                </Button>
-            </Container>
-        )
+                    
+                    <View>
+                        <Form>
+                            <Item floatingLabel last style={styles.SearchBar}>
+                                <Label>Enter House Number</Label>
+                                <Input
+                                    onChangeText = {(text)=>{this.setState({houseNumber:text})}}
+                                    autoCorrect = {false}
+                                    spellCheck = {false}
+                                 />
+                            </Item>
+                            <Item floatingLabel last style={styles.SearchBar}>
+                                <Label>Enter Locality with City</Label>
+                                <Input
+                                    onChangeText = {(text)=>{this.googlePlacesFunction(text)}}
+                                    autoCorrect = {false}
+                                    spellCheck = {false}
+                                 />
+                            </Item>
+                        </Form>
+    
+                        <View style={(this.state.showLocations)?[styles.locationsBox]:[styles.hideBox]}>
+                            <LocationBar locations={this.state.locations} onPress={(location)=>{this.locationPickerHandler(location)}} />
+                        </View>                
+                    </View>                
+    
+                    <View style={styles.container}>
+                        <Text style={styles.containerText}>For Google Maps</Text>
+                    </View>
+    
+                    <Button full disabled style={styles.nextButton}>
+                        <Text>Next</Text>
+                    </Button>
+                </Container>
+            )
+        }        
     }
 
 }
