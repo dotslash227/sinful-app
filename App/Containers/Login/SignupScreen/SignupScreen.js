@@ -101,7 +101,7 @@ export default class SignupScreen extends Component {
                 numColumns = {3}
                 data = {momoList}
                 extraData = {this.state}
-                renderItem = {({item})=>                    
+                renderItem = {({item, key})=>                    
                     <MomoObject id={item.id} name={item.name} onPress={
                         ()=>this.momoCounter(item.id)
                     } style={(this.state.selectedMomos.includes(item.id))?styles.momoPicSelected:styles.momoPic} />
@@ -134,6 +134,8 @@ export default class SignupScreen extends Component {
                             style={styles.nameTextInput}
                             onChangeText = {(text)=>{this.setState({fullName:text})}}
                             onEndEditing = {()=>this.checkFlagStatus()}
+                            autoComplete = {false}
+                            spellCheck = {false}
                         />
                         <TextInput
                             placeholder="Please enter your email address"
@@ -141,6 +143,8 @@ export default class SignupScreen extends Component {
                             style={styles.emailTextInput}
                             onChangeText = {(emailtext)=>{this.setState({email:emailtext})}}
                             onEndEditing = {()=>this.checkFlagStatus()}
+                            autoComplete = {false}
+                            spellCheck = {false}
                         />                    
                     </View>
 

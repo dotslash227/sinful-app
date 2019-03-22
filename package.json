@@ -13,8 +13,6 @@
     "android": "react-native run-android"
   },
   "dependencies": {
-    "@shoutem/theme": "^0.11.3",
-    "@shoutem/ui": "^0.23.18",
     "apisauce": "^1.0.2",
     "immutable": "^3.8.2",
     "native-base": "^2.12.1",

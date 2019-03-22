@@ -39,9 +39,9 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>>Your location is required to show suggestions</string>
+	<string>&gt;Your location is required to show suggestions</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>>Your location is required to show suggestions</string>
+	<string>&gt;Your location is required to show suggestions</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -53,7 +53,7 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>UIAppFonts</key>	
+	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

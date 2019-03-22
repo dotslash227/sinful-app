@@ -1,43 +1,7 @@
 import React, {Component} from 'react'
-import { Text, View, StyleSheet, Image, TextInput } from 'react-native'
+import { Text, View, StyleSheet, Image} from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import { Button, ImageBackground, Screen } from '@shoutem/ui'
-
-const styles = StyleSheet.create({
-  bgImage:{
-    backgroundColor: "black",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    opacity: 0.8
-  },
-  phoneNumber:{
-    width: "70%",
-    opacity: 1,
-    color: "white",
-    height: 25,
-    marginBottom: 10,
-    fontSize: 15,
-    borderBottomWidth: 3,
-    borderBottomColor: "green",
-    textAlign: "center"
-  },
-  phoneNumber2:{
-    width: "70%",
-    opacity: 1,
-    color: "white",
-    height: 25,
-    marginBottom: 4,
-    fontSize: 15,
-    borderBottomWidth: 3,
-    borderBottomColor: "white",
-    textAlign: "center"
-  },
-  button:{
-    padding: 10,
-    backgroundColor: "white"    
-  }
-})
+import {Container, Button, Item, Input, Content} from 'native-base'
 
 export default class LoginScreen extends Component {
 
@@ -56,24 +20,55 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <Screen>
-        <ImageBackground  
-          style={styles.bgImage}
-          source={require("../../../Images/bg.jpg")}
-        >
-        <TextInput 
-          placeholder={"Enter Phone Number"}
-          style={styles.phoneNumber}
-          placeholderTextColor="white"
-          onChangeText = {(text)=>{this.setState({mobile:text})}}
-        />
-        <Button styleName="secondary" style={styles.button} onPress={
-          () => this.goToOTPScreen()          
-        }>
-          <Text>Generate OTP</Text>
-        </Button>
-        </ImageBackground>
-      </Screen>                
+      <Container style={styles.screen}> 
+        <Content>
+          <Image 
+            source={require("../../../Images/logo-2.png")}
+            style={styles.logo}
+          />
+          <Item>
+            <Input 
+              placeholder={"Please enter your phone number"}
+              placeholderTextColor="teal"
+              style = {styles.input}
+              onChangeText = {(text)=>{this.setState({mobile:text})}}
+            />
+          </Item>
+          
+          <Button rounded danger style={styles.button} onPress={() => this.goToOTPScreen()}>
+            <Text style={styles.buttonText}>Generate OTP and Signup</Text>
+          </Button>
+        </Content>        
+      </Container>                
     )
   }
 }
+
+const styles = StyleSheet.create({
+  input:{
+    textAlign:"center",
+    color: "teal"
+  },
+  buttonText:{    
+    color: "white",
+    textAlign: "center",
+    fontSize: 15,    
+    marginLeft: 40
+  },
+  screen:{
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",    
+    backgroundColor: "white"
+  },
+  logo:{
+    marginTop: "20%",        
+    width: 300,
+    height: 300,
+  },        
+  button:{        
+    width: "100%",    
+    marginTop: 20,
+    padding: 20,        
+  }
+})
