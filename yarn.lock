@@ -4854,6 +4854,11 @@ react-native-gesture-responder@0.1.1:
   dependencies:
     react-timer-mixin "^0.13.3"
 
+react-native-google-places@^3.0.0-beta.11:
+  version "3.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/react-native-google-places/-/react-native-google-places-3.0.0-beta.11.tgz#b15911c11fd3c5f6f3f862f131704a2e29279f4f"
+  integrity sha512-0TXvUVs11NSpUGJCeVlfGKbTBAKeZWBDs+xYNbPL14nuR7bQl2ayNdDmEK4rlt4t9ol0kvuU3mshtPIKnSqFbw==
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
