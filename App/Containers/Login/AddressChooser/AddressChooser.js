@@ -46,6 +46,7 @@ export default class AddressChooser extends Component{
             locations : [],
             showLocations: false,
             pickedLocation: '',
+            pickedLocationText: '',
             loading: true,            
             latlng: '',
             flag: false
@@ -66,11 +67,12 @@ export default class AddressChooser extends Component{
     }
 
     locationPickerHandler(location){        
-        RNGooglePlaces.lookUpPlaceByID(location.placeID)
-        .then((results)=>{
+        RNGooglePlaces.lookUpPlaceByID(location.placeID)        
+        .then((results)=>{            
             this.setState({
                 pickedLocation:{latitude:results.location.latitude, longitude:results.location.longitude}, 
                 latlng : {latitude:results.location.latitude, longitude:results.location.longitude}, 
+                locality : results.address,
                 showLocations:false
             })
         })
@@ -79,7 +81,6 @@ export default class AddressChooser extends Component{
 
     googlePlacesFunction(text){
         this.setState({locality:text});        
-
         RNGooglePlaces.getAutocompletePredictions(text, {
             country: "IN",
             types: ["establishment", "geocode"],
@@ -125,6 +126,7 @@ export default class AddressChooser extends Component{
                                     onChangeText = {(text)=>{this.googlePlacesFunction(text)}}
                                     autoCorrect = {false}
                                     spellCheck = {false}
+                                    value = {this.state.locality}
                                  />
                             </Item>
                         </Form>
