@@ -8,7 +8,8 @@ export default class LoginScreen extends Component {
   constructor(props){
     super(props);
     this.state = {
-      mobile : ''
+      mobile : '',
+      flag: false      
     }
   }
 
@@ -16,6 +17,13 @@ export default class LoginScreen extends Component {
     NavigationService.navigate('LoginOTPScreen', {
       mobile: this.state.mobile
     })
+  }
+
+  inputHandler(text){
+    this.setState({flag:false, mobile:text});    
+    if (text.length == 10){
+      this.setState({flag:true});
+    }
   }
 
   render() {
@@ -31,11 +39,11 @@ export default class LoginScreen extends Component {
               placeholder={"Please enter your phone number"}
               placeholderTextColor="teal"
               style = {styles.input}
-              onChangeText = {(text)=>{this.setState({mobile:text})}}
+              onChangeText = {(text)=>this.inputHandler(text)}
             />
           </Item>
           
-          <Button rounded danger style={styles.button} onPress={() => this.goToOTPScreen()}>
+          <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.goToOTPScreen()}>
             <Text style={styles.buttonText}>Generate OTP and Signup</Text>
           </Button>
         </Content>        

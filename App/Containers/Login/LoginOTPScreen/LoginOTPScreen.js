@@ -10,12 +10,20 @@ export default class LoginOTPScreen extends Component {
     this.mobile = this.props.navigation.getParam("mobile", "NA")
     this.state = {
       isFocused : false,
-      otp : ''
+      otp : '',
+      flag: false
     }
   }
 
   goToSignup(){
     NavigationService.navigate("Signup")
+  }
+
+  otpInputHandler(text){
+    this.setState({flag:false, otp:text});    
+    if (text.length == 4){
+      this.setState({flag:true});
+    }
   }
 
   render() {
@@ -32,15 +40,9 @@ export default class LoginOTPScreen extends Component {
             <Input 
             placeholder="Pleas enter the OTP"
             style={styles.otpInput}
+            onChangeText = {(text)=> this.otpInputHandler(text)}
             />
-          </Item>
-
-          <TextInput 
-            placeholder={"Verify OTP"}
-            style={styles.phoneNumber2} 
-            placeholderTextColor="white"           
-            onChangeText = { (text)=> {this.setState({otp:text})}}
-          />
+          </Item>          
 
         <View style={styles.msgBox}>
           <TouchableHighlight onPress={ ()=> {this.props.navigation.goBack()} }>
@@ -51,7 +53,7 @@ export default class LoginOTPScreen extends Component {
           </TouchableHighlight>
         </View>
         
-        <Button danger bordered style={styles.button} onPress={()=>this.goToSignup()}>
+        <Button danger bordered style={styles.button} disabled={!this.state.flag} onPress={()=>this.goToSignup()}>
           <Text style={styles.buttonText}>Submit OTP and Continue</Text>
         </Button>        
         </Content>
@@ -72,7 +74,10 @@ const styles = StyleSheet.create({
   },
   otpInput:{
     color: "teal",
-    textAlign: "center"
+    textAlign: "center",
+    borderBottomWidth: 2,
+    borderBottomColor: "grey",
+    marginBottom: 5
   },
   center:{
     textAlign: "center",
