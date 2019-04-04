@@ -14,6 +14,10 @@ import LoginOTPScreen from 'App/Containers/Login/LoginOTPScreen/LoginOTPScreen'
 import SignupScreen from 'App/Containers/Login/SignupScreen/SignupScreen'
 import AddressChooser from 'App/Containers/Login/AddressChooser/AddressChooser'
 
+// Theme:
+import { StyleProvider } from 'native-base'
+import getTheme from 'native-base-theme/components'
+
 /**
  * The root screen contains the application's navigation.
  *
@@ -25,15 +29,15 @@ const AppNav = createStackNavigator(
     // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
     SplashScreen: SplashScreen,
     // The main application screen is our "ExampleScreen". Feel free to replace it with your
-    // own screen and remove the example.    
+    // own screen and remove the example.
     LoginScreen: LoginScreen,
     LoginOTPScreen: LoginOTPScreen,
     Signup: SignupScreen,
-    AddressChooser: AddressChooser
+    AddressChooser: AddressChooser,
   },
   {
     // By default the application will show the splash screen
-    initialRouteName: "SplashScreen",
+    initialRouteName: 'SplashScreen',
     // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
     headerMode: 'none',
   }
@@ -49,14 +53,16 @@ class RootScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <App
-          // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-          ref={(navigatorRef) => {
-            NavigationService.setTopLevelNavigator(navigatorRef)
-          }}
-        />
-      </View>
+      <StyleProvider style={getTheme()}>
+        <View style={styles.container}>
+          <App
+            // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
+            ref={(navigatorRef) => {
+              NavigationService.setTopLevelNavigator(navigatorRef)
+            }}
+          />
+        </View>
+      </StyleProvider>
     )
   }
 }
