@@ -13,10 +13,12 @@ import LoginScreen from 'App/Containers/Login/LoginScreen/LoginScreen'
 import LoginOTPScreen from 'App/Containers/Login/LoginOTPScreen/LoginOTPScreen'
 import SignupScreen from 'App/Containers/Login/SignupScreen/SignupScreen'
 import AddressChooser from 'App/Containers/Login/AddressChooser/AddressChooser'
+// Home & Main Screens:
+import HomeScreen from 'App/Containers/Home/HomeScreen'
 
 // Theme:
 import { StyleProvider } from 'native-base'
-import getTheme from 'native-base-theme/components'
+import getTheme from './../../../native-base-theme/components'
 
 /**
  * The root screen contains the application's navigation.
@@ -34,6 +36,7 @@ const AppNav = createStackNavigator(
     LoginOTPScreen: LoginOTPScreen,
     Signup: SignupScreen,
     AddressChooser: AddressChooser,
+    Home: HomeScreen,
   },
   {
     // By default the application will show the splash screen
