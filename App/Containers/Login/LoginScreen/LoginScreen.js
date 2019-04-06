@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import { Text, View, StyleSheet, Image} from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
 import {Container, Button, Item, Input, Content} from 'native-base'
+import axios from 'axios';
+import SpinnerView from 'App/Components/Spinner';
 
 export default class LoginScreen extends Component {
 
@@ -9,50 +11,101 @@ export default class LoginScreen extends Component {
     super(props);
     this.state = {
       mobile : '',
-      flag: false      
+      flag: false,
+      token : '',
+      error: false,
+      loading: false
     }
   }
 
   goToOTPScreen() {
-    NavigationService.navigate('LoginOTPScreen', {
-      mobile: this.state.mobile
+
+    this.setState({loading:true});    
+    axios.post("https://api.momosnow.app/auth/signin", {
+      "meta_app": "momosnow",
+      "phoneNumber": this.state.mobile
     })
+    .then(res=>{
+      if (res.data.success=true){
+        console.log(res);
+        this.setState({loading: true, error: false, token:res.data.phoneToken});
+        NavigationService.navigate('LoginOTPScreen', {
+          mobile: this.state.mobile,
+          phoneToken: this.state.token
+        })
+      }
+    })
+    .catch(e=>{
+      this.setState({error:true, loading:false});
+      console.log(e);
+    })    
   }
 
   inputHandler(text){
-    this.setState({flag:false, mobile:text});    
+    this.setState({flag:false, mobile:"+91"+text});    
     if (text.length == 10){
       this.setState({flag:true});
     }
   }
 
+  renderErrors(){
+
+    if (this.state.error){
+      return(
+        <View style={styles.errorBox}>
+          <Text style={styles.errorText}>There was some error while processing your login</Text>
+          <Text style={styles.errorText}>Please try again</Text>
+        </View>
+      )
+    }    
+  }
+
   render() {
-    return (
-      <Container style={styles.screen}> 
-        <Content>
-          <Image 
-            source={require("../../../Images/logo-2.png")}
-            style={styles.logo}
-          />
-          <Item>
-            <Input 
-              placeholder={"Please enter your phone number"}
-              placeholderTextColor="teal"
-              style = {styles.input}
-              onChangeText = {(text)=>this.inputHandler(text)}
+
+    if (this.state.loading){
+      return(
+        <SpinnerView />
+      )
+    }
+
+    else{
+      return (
+        <Container style={styles.screen}> 
+          <Content>
+            <Image 
+              source={require("../../../Images/logo-2.png")}
+              style={styles.logo}
             />
-          </Item>
+            <Item>
+              <Input 
+                placeholder={"Please enter your phone number"}
+                placeholderTextColor="teal"
+                style = {styles.input}
+                onChangeText = {(text)=>this.inputHandler(text)}
+              />
+            </Item>
+            
+            <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.goToOTPScreen()}>
+              <Text style={styles.buttonText}>Generate OTP and Signup</Text>
+            </Button>
+  
+            {this.renderErrors()}
           
-          <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.goToOTPScreen()}>
-            <Text style={styles.buttonText}>Generate OTP and Signup</Text>
-          </Button>
-        </Content>        
-      </Container>                
-    )
+          </Content>        
+        </Container>                
+      ) 
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  errorBox:{
+    padding: 15
+  },
+  errorText: {
+    textAlign: "center",
+    color: "red"
+  },
   input:{
     textAlign:"center",
     color: "teal"
