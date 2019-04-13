@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1049672390891",
+    "firebase_url": "https://sinfulapp.firebaseio.com",
+    "project_id": "sinfulapp",
+    "storage_bucket": "sinfulapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049672390891:android:78bee77606bb6ae3",
+        "android_client_info": {
+          "package_name": "com.sinful"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049672390891-ovvkj3c4uqbc9qrmob2q67cllc8t6kct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNbANqfayGEplMdfp_cH9b9QdwqSu1ZSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049672390891-ovvkj3c4uqbc9qrmob2q67cllc8t6kct.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1049672390891-9s14dkg2ljb1rcoahitoaciv78j62lu2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sinful"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
