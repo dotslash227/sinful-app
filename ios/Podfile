@@ -38,4 +38,7 @@ target 'Sinful' do
   #pod 'GLog', :podspec => "#{rn_path}/third-party-podspecs/GLog.podspec"
   pod 'Folly', :podspec => "#{rn_path}/third-party-podspecs/Folly.podspec"
 
+  # Firebase stuff:
+  pod 'Firebase/Core'
+
 end
