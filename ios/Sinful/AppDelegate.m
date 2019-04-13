@@ -12,12 +12,15 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 @import GooglePlaces; 
-@import GoogleMaps;  
+@import GoogleMaps;
+
+@import Firebase;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
   [GMSServices provideAPIKey:@"AIzaSyDLBiqQWarkDnsKLZpH_RP5slTmv-FvcKQ"];
   [GMSPlacesClient provideAPIKey:@"AIzaSyDLBiqQWarkDnsKLZpH_RP5slTmv-FvcKQ"];  
 
