@@ -48,7 +48,7 @@ export default class SignupScreen extends Component {
         }
         else{
             if(currentState.momoCount >=3){
-                alert("Only upto 3 momos can be selected, choose a biryani instead using our BiryaniNow App");                
+                alert("Only upto 3 momos can be selected, choose a biryani instead using our BiryaniNow App");
             }
             else{
                 currentState.selectedMomos.push(name);
