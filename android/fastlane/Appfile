@@ -1,0 +1,2 @@
+json_key_file("api-7640374354611289770-117070-5378f7178857.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.sinful") # e.g. com.krausefx.app
