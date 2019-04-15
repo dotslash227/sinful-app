@@ -40,5 +40,6 @@ target 'Sinful' do
 
   # Firebase stuff:
   pod 'Firebase/Core'
+  pod 'Firebase/Auth', '~> 5.15.0'
 
 end
