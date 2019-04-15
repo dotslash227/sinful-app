@@ -5,6 +5,9 @@ import {Container, Button, Item, Input, Content} from 'native-base'
 import axios from 'axios';
 import SpinnerView from 'App/Components/Spinner';
 
+// API:
+import { initiatePhoneAuth } from "App/Lib/Auth/phone";
+
 export default class LoginScreen extends Component {
 
   constructor(props){
@@ -16,6 +19,25 @@ export default class LoginScreen extends Component {
       error: false,
       loading: false
     }
+  }
+
+  async phoneLogin() {
+    this.setState({loading:true});
+    const { mobile } = this.state;
+    try {
+      const confirmResult = await initiatePhoneAuth(mobile);
+      this.setState({loading:false});
+      NavigationService.navigate('LoginOTPScreen', {
+          mobile,
+          confirmResult
+      });
+    } catch(e) {
+      this.setState({loading:false});
+      console.log(e);
+      if(e === "InvalidPhoneNumber") alert("Phone Number is Invalid");
+      else alert("Error Occured");
+    }
+
   }
 
   goToOTPScreen() {
@@ -42,7 +64,7 @@ export default class LoginScreen extends Component {
   }
 
   inputHandler(text){
-    this.setState({flag:false, mobile:"+91"+text});    
+    this.setState({flag:false, mobile:`+91${text}`});
     if (text.length == 10){
       this.setState({flag:true});
     }
@@ -81,11 +103,11 @@ export default class LoginScreen extends Component {
                 placeholder={"Please enter your phone number"}
                 placeholderTextColor="teal"
                 style = {styles.input}
-                onChangeText = {(text)=>this.inputHandler(text)}
+                onChangeText = {(text)=> this.inputHandler(text)}
               />
             </Item>
             
-            <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.goToOTPScreen()}>
+            <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.phoneLogin()}>
               <Text style={styles.buttonText}>Generate OTP and Signup</Text>
             </Button>
   

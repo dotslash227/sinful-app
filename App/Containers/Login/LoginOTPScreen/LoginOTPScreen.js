@@ -2,27 +2,41 @@ import React, {Component} from 'react'
 import { Text, View, TextInput, StyleSheet, TouchableHighlight, Image } from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
 import {Button, Container, Content, Item, Input} from 'native-base';
-import axios from "axios";
 import SpinnerView from 'App/Components/Spinner';
+
+// Lib
+import { validateOTP } from "App/Lib/Auth/phone";
 
 export default class LoginOTPScreen extends Component {
 
   constructor(props){
     super(props);
-    this.mobile = this.props.navigation.getParam("mobile", "NA")
-    this.phoneToken = this.props.navigation.getParam("phoneToken", "NA")
     this.state = {
       isFocused : false,
       otp : '',
       flag: false,
       invalidOTP: false,
-      loading: false
+      loading: false,
+      mobile: null,
+      confirmResult: null
     }
   }
 
   componentDidMount(){
-    console.log(this.mobile);
-    console.log(this.phoneToken);
+    const mobile = this.props.navigation.getParam("mobile");
+    const confirmResult = this.props.navigation.getParam("confirmResult");
+    this.setState({ mobile, confirmResult });
+  }
+
+  async verifyOTP() {
+    const { otp, confirmResult } = this.state;
+    try {
+      const user = await validateOTP(confirmResult, otp);
+      // TODO: Add user to store
+      NavigationService.navigate("Signup")
+    } catch(e) {
+      alert("Invalid OTP");
+    }
   }
 
   goToSignup(){
@@ -48,7 +62,7 @@ export default class LoginOTPScreen extends Component {
 
   otpInputHandler(text){
     this.setState({flag:false, otp:text});    
-    if (text.length == 4){
+    if (text.length > 4){
       this.setState({flag:true});
     }
   }
@@ -101,7 +115,7 @@ export default class LoginOTPScreen extends Component {
 
           {this.renderErrors()}
           
-          <Button danger bordered style={styles.button} disabled={!this.state.flag} onPress={()=>this.goToSignup()}>
+          <Button danger bordered style={styles.button} disabled={!this.state.flag} onPress={()=>this.verifyOTP()}>
             <Text style={styles.buttonText}>Submit OTP and Continue</Text>
           </Button>        
           </Content>
