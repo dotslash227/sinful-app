@@ -40,29 +40,6 @@ export default class LoginScreen extends Component {
 
   }
 
-  goToOTPScreen() {
-
-    this.setState({loading:true});    
-    axios.post("https://api.momosnow.app/auth/signin", {
-      "meta_app": "momosnow",
-      "phoneNumber": this.state.mobile
-    })
-    .then(res=>{
-      if (res.data.success=true){
-        console.log(res);
-        this.setState({loading: true, error: false, token:res.data.phoneToken});
-        NavigationService.navigate('LoginOTPScreen', {
-          mobile: this.state.mobile,
-          phoneToken: this.state.token
-        })
-      }
-    })
-    .catch(e=>{
-      this.setState({error:true, loading:false});
-      console.log(e);
-    })    
-  }
-
   inputHandler(text){
     this.setState({flag:false, mobile:`+91${text}`});
     if (text.length == 10){

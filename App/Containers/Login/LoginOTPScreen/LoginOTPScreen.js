@@ -29,35 +29,17 @@ export default class LoginOTPScreen extends Component {
   }
 
   async verifyOTP() {
+    this.setState({loading:true});
     const { otp, confirmResult } = this.state;
     try {
       const user = await validateOTP(confirmResult, otp);
       // TODO: Add user to store
+      // TODO: Decide if to send to Signup or Home according to profile completion.
       NavigationService.navigate("Signup")
     } catch(e) {
       alert("Invalid OTP");
+      this.setState({loading:false, invalidOTP:true});
     }
-  }
-
-  goToSignup(){
-    this.setState({loading:true})
-    axios.post("https://api.momosnow.app/auth/verify-token", {
-      phoneToken: this.phoneToken,
-      otp: this.state.otp
-    })
-    .then(res=>{      
-      if ((res.data.success=true) && (res.data.isProfileComplete==true)){
-        console.log("Completed Profile Yolo")
-      }
-      else if((res.data.success=true) && (res.data.isProfileComplete==false)){
-        NavigationService.navigate("Signup")
-        console.log("Profile is incomplete");
-      }      
-    })
-    .catch(e=>{
-      console.log(e);
-      this.setState({loading:false, invalidOTP:true})
-    })    
   }
 
   otpInputHandler(text){
