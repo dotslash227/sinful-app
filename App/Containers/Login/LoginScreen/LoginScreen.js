@@ -1,135 +1,128 @@
-import React, {Component} from 'react'
-import { Text, View, StyleSheet, Image} from 'react-native'
+import React, { Component } from 'react'
+import { Text, View, StyleSheet, Image } from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import {Container, Button, Item, Input, Content} from 'native-base'
-import axios from 'axios';
-import SpinnerView from 'App/Components/Spinner';
+import { Container, Button, Item, Input, Content } from 'native-base'
+import axios from 'axios'
+import SpinnerView from 'App/Components/Spinner'
+
+// API:
+import { initiatePhoneAuth } from 'App/Lib/Auth/phone'
 
 export default class LoginScreen extends Component {
-
-  constructor(props){
-    super(props);
+  constructor(props) {
+    super(props)
     this.state = {
-      mobile : '',
+      mobile: '',
       flag: false,
-      token : '',
+      token: '',
       error: false,
-      loading: false
+      loading: false,
     }
   }
 
-  goToOTPScreen() {
-
-    this.setState({loading:true});    
-    axios.post("https://api.momosnow.app/auth/signin", {
-      "meta_app": "momosnow",
-      "phoneNumber": this.state.mobile
-    })
-    .then(res=>{
-      if (res.data.success=true){
-        console.log(res);
-        this.setState({loading: true, error: false, token:res.data.phoneToken});
-        NavigationService.navigate('LoginOTPScreen', {
-          mobile: this.state.mobile,
-          phoneToken: this.state.token
-        })
-      }
-    })
-    .catch(e=>{
-      this.setState({error:true, loading:false});
-      console.log(e);
-    })    
-  }
-
-  inputHandler(text){
-    this.setState({flag:false, mobile:"+91"+text});    
-    if (text.length == 10){
-      this.setState({flag:true});
+  async phoneLogin() {
+    this.setState({ loading: true })
+    const { mobile } = this.state
+    try {
+      const confirmResult = await initiatePhoneAuth(mobile)
+      this.setState({ loading: false })
+      NavigationService.navigate('LoginOTPScreen', {
+        mobile,
+        confirmResult,
+      })
+    } catch (e) {
+      this.setState({ loading: false })
+      console.log(e)
+      if (e === 'InvalidPhoneNumber') alert('Phone Number is Invalid')
+      else alert('Error Occured')
     }
   }
 
-  renderErrors(){
+  inputHandler(text) {
+    this.setState({ flag: false, mobile: `+91${text}` })
+    if (text.length == 10) {
+      this.setState({ flag: true })
+    }
+  }
 
-    if (this.state.error){
-      return(
+  renderErrors() {
+    if (this.state.error) {
+      return (
         <View style={styles.errorBox}>
           <Text style={styles.errorText}>There was some error while processing your login</Text>
           <Text style={styles.errorText}>Please try again</Text>
         </View>
       )
-    }    
+    }
   }
 
   render() {
-
-    if (this.state.loading){
-      return(
-        <SpinnerView />
-      )
-    }
-
-    else{
+    if (this.state.loading) {
+      return <SpinnerView />
+    } else {
       return (
-        <Container style={styles.screen}> 
+        <Container style={styles.screen}>
           <Content>
-            <Image 
-              source={require("../../../Images/logo-2.png")}
-              style={styles.logo}
-            />
+            <Image source={require('../../../Images/logo-2.png')} style={styles.logo} />
             <Item>
-              <Input 
-                placeholder={"Please enter your phone number"}
+              <Input
+                placeholder={'Please enter your phone number'}
                 placeholderTextColor="teal"
-                style = {styles.input}
-                onChangeText = {(text)=>this.inputHandler(text)}
+                style={styles.input}
+                onChangeText={(text) => this.inputHandler(text)}
               />
             </Item>
-            
-            <Button rounded danger style={styles.button} disabled={!this.state.flag} onPress={() => this.goToOTPScreen()}>
+
+            <Button
+              rounded
+              danger
+              style={styles.button}
+              disabled={!this.state.flag}
+              onPress={() => this.phoneLogin()}
+            >
               <Text style={styles.buttonText}>Generate OTP and Signup</Text>
             </Button>
-  
+
             {this.renderErrors()}
-          
-          </Content>        
-        </Container>                
-      ) 
+          </Content>
+        </Container>
+      )
     }
   }
 }
 
 const styles = StyleSheet.create({
-  errorBox:{
-    padding: 15
+  errorBox: {
+    padding: 15,
   },
   errorText: {
-    textAlign: "center",
-    color: "red"
+    textAlign: 'center',
+    color: 'red',
   },
-  input:{
-    textAlign:"center",
-    color: "teal"
+  input: {
+    textAlign: 'center',
+    color: 'teal',
   },
-  buttonText:{    
-    color: "white",
-    textAlign: "center",
-    fontSize: 15,    
-    marginLeft: 40
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 15,
+    marginLeft: 40,
   },
-  screen:{
+  screen: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",    
-    backgroundColor: "white"
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
-  logo:{
-    marginTop: "20%",        
+  logo: {
+    marginTop: '20%',
     width: 300,
     height: 300,
-  },        
-  button:{        
-    width: "100%",    
+  },
+  button: {
+    width: '100%',
     marginTop: 20,
-    padding: 20,        
-  }
+    padding: 20,
+  },
 })
