@@ -1,6 +1,9 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - Crashlytics (3.10.9):
+    - Fabric (~> 1.7.13)
   - DoubleConversion (1.1.6)
+  - Fabric (1.7.13)
   - Firebase/Auth (5.15.0):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.2.0)
@@ -137,7 +140,9 @@ PODS:
   - yoga (0.59.4.React)
 
 DEPENDENCIES:
+  - Crashlytics (~> 3.10.7)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Fabric (~> 1.7.13)
   - Firebase/Auth (~> 5.15.0)
   - Firebase/Core
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
@@ -165,6 +170,8 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - boost-for-react-native
+    - Crashlytics
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -197,7 +204,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  Crashlytics: 55e24fc23989680285a21cb1146578d9d18e432c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
   Firebase: 8bb9268bff82374f2cbaaabb143e725743c316ae
   FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
   FirebaseAuth: 02e969ff430e156d99d4cb842d77b806b71ad7bb
@@ -218,6 +227,6 @@ SPEC CHECKSUMS:
   RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 6c75ccc9a5d0fb1e6735ec0fe48da7891fbb2e8a
+PODFILE CHECKSUM: 3b2d22d4f9bb22e3eab351738976b99e7fd06ad8
 
 COCOAPODS: 1.5.3
