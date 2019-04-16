@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Image, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, FlatList} from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import {Button, Container, Grid, Col, Row} from 'native-base';
+import {Button, Container, Grid, Col, Row, Content} from 'native-base';
 
 class MomoObject extends Component{
     constructor(props){
@@ -121,7 +121,8 @@ export default class SignupScreen extends Component {
         return(
             
                 <Container style={styles.Screen}>
-                    <View style={{marginBottom:30}}>
+                <Content>
+                <View style={{marginBottom:30}}>
                         <Text style={{color:"teal", fontWeight: "bold", textAlign: "justify"}}>
                             Hi, we just your need name and email to get you started and some preferences and then we'll
                             take you to a fascinating world of momos
@@ -134,8 +135,8 @@ export default class SignupScreen extends Component {
                             style={styles.nameTextInput}
                             onChangeText = {(text)=>{this.setState({fullName:text})}}
                             onEndEditing = {()=>this.checkFlagStatus()}
-                            autoComplete = {false}
-                            spellCheck = {false}
+                            autoComplete = "off"
+                            spellCheck = {false}                            
                         />
                         <TextInput
                             placeholder="Please enter your email address"
@@ -143,7 +144,7 @@ export default class SignupScreen extends Component {
                             style={styles.emailTextInput}
                             onChangeText = {(emailtext)=>{this.setState({email:emailtext})}}
                             onEndEditing = {()=>this.checkFlagStatus()}
-                            autoComplete = {false}
+                            autoComplete = "off"
                             spellCheck = {false}
                         />                    
                     </View>
@@ -161,6 +162,7 @@ export default class SignupScreen extends Component {
                     <Button style={styles.nextButton} disabled={!this.state.flag} block onPress={()=>this.goToAddressChooser()}>
                         <Text style={{color:"white", fontWeight: "bold"}}>Next</Text>
                     </Button>
+                </Content>                    
 
                 </Container>
             

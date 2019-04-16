@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import {Container, Grid, Row, Col, Icon, Form, Input, Item, Label, Button, FooterTab, Footer} from 'native-base'
+import {Container, Grid, Row, Col, Icon, Form, Input, Item, Label, Button, FooterTab, Footer, Content} from 'native-base'
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import SpinnerView from 'App/Components/Spinner';
 
 export class LocationBar extends Component{
     constructor(props){
@@ -100,12 +101,13 @@ export default class AddressChooser extends Component{
 
         if(this.state.loading==true){
             return(
-                <Text>Loading</Text>
+                <SpinnerView />
             )
         }
         else{
             return(            
                 <Container style={styles.Screen}>
+                    <Content>
                     <View>
                         <Text style={styles.HeaderText}>Hello {this.state.name}, we are almost done, we just need your delivery address and location</Text>
                     </View>                
@@ -163,7 +165,8 @@ export default class AddressChooser extends Component{
                                 <Text>Next</Text>
                             </Button>
                         </FooterTab>
-                    </Footer>                    
+                    </Footer>   
+                    </Content>                                 
                 </Container>
             )
         }        
