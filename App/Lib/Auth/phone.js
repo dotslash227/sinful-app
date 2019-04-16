@@ -2,7 +2,7 @@
 	All Things related to Phone Auth
 */
 
-import common from 'App/Lib/common';
+import commonLib from './../common.js';
 import firebase from 'react-native-firebase';
 
 // Utils:
@@ -15,7 +15,8 @@ export async function initiatePhoneAuth(phoneNumber) {
 		const confirmResult = await firebase.auth().signInWithPhoneNumber(phoneNumber);
 		return confirmResult;
 	} catch (e) {
-		common.report(e);
+		//console.log(e);
+		commonLib.report(e);
 		throw new Error('UnknownError');
 	}
 }
@@ -25,7 +26,7 @@ export async function validateOTP(confirmResult, otp) {
 		const user = await confirmResult.confirm(otp);
 		return user;
 	} catch (e) {
-		common.report(e);
+		commonLib.report(e);
 		throw new Error('InvalidOTP');
 	}
 }

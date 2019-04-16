@@ -1,4 +1,4 @@
-import common from 'App/Lib/common';
+import commonLib from 'App/Lib/common';
 import firebase from 'react-native-firebase';
 
 async function getUserById(id) {
@@ -10,7 +10,7 @@ async function getUserById(id) {
 		if (!getUser.exists) return null;
 		else return getUser.data();
 	} catch (e) {
-		common.report(e);
+		commonLib.report(e);
 		return null;
 	}
 }
