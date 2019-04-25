@@ -79,7 +79,7 @@ export default class AddressChooser extends Component {
         userLat: result[0].location.latitude,
         userLong: result[0].location.longitude,
         latlng: { latitude: result[0].location.latitude, longitude: result[0].location.longitude },
-      });
+      });      
     } catch (e) {
       console.log(e.message);
     }
@@ -102,6 +102,7 @@ export default class AddressChooser extends Component {
   }
 
   googlePlacesFunction(text) {
+    console.log(text);
     this.setState({ locality: text });
     RNGooglePlaces.getAutocompletePredictions(text, {
       country: 'IN',
@@ -110,8 +111,9 @@ export default class AddressChooser extends Component {
       longitude: this.state.userLong,
       radius: 10,
     })
-      .then((results) => {
+      .then((results) => {        
         this.setState({ locations: results, showLocations: true });
+        console.log(this.state);
       })
       .catch((error) => console.log(error.message));
 
@@ -124,7 +126,33 @@ export default class AddressChooser extends Component {
     } else {
       return (
         <Container style={styles.Screen}>
-          <Content>
+          <View>            
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                style={styles.map}
+                region={{
+                  latitude:
+                    this.state.pickedLocation == ''
+                      ? this.state.userLat
+                      : this.state.pickedLocation.latitude,
+                  longitude:
+                    this.state.pickedLocation == ''
+                      ? this.state.userLong
+                      : this.state.pickedLocation.longitude,
+                latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                showsUserLocation={true}
+                minZoomLevel={10}
+                maxZoomLevel={20}
+              >
+                <Marker coordinate={this.state.latlng} draggable />
+              </MapView>
+              
+            </View>    
+
+
+          <Content style={{paddingLeft: 10, paddingRight: 10, marginTop: 10}}>          
             <View>
               <Text style={styles.HeaderText}>
                 Hello {this.state.name}, we are almost done, we just need your delivery address and
@@ -155,61 +183,44 @@ export default class AddressChooser extends Component {
                     value={this.state.locality}
                   />
                 </Item>
-              </Form>
-
-              <View style={this.state.showLocations ? [styles.locationsBox] : [styles.hideBox]}>
-                <LocationBar
-                  locations={this.state.locations}
-                  onPress={(location) => {
-                    this.locationPickerHandler(location);
-                  }}
-                />
-              </View>
+              </Form>              
             </View>
 
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              region={{
-                latitude:
-                  this.state.pickedLocation == ''
-                    ? this.state.userLat
-                    : this.state.pickedLocation.latitude,
-                longitude:
-                  this.state.pickedLocation == ''
-                    ? this.state.userLong
-                    : this.state.pickedLocation.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-              showsUserLocation={true}
-              minZoomLevel={15}
-              maxZoomLevel={20}
-            >
-              <Marker coordinate={this.state.latlng} draggable />
-            </MapView>
-
-            <Footer style={{ position: 'absolute', top: 500 }}>
-              <FooterTab>
-                <Button full disabled style={styles.nextButton}>
-                  <Text>Next</Text>
-                </Button>
+            <View style={this.state.showLocations ? [styles.locationsBox] : [styles.hideBox]}>
+              <LocationBar
+                locations={this.state.locations}
+                onPress={(location) => {
+                  this.locationPickerHandler(location);
+                }}
+              />
+              </View>
+                            
+              <Footer style={{ position: 'absolute', top: 500 }}>
+              <FooterTab>                
               </FooterTab>
-            </Footer>
+            </Footer>            
+                                         
           </Content>
+
+          <Button full disabled style={styles.nextButton}>
+            <Text>Signup</Text>
+          </Button>
+
         </Container>
       );
     }
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
   map: {
-    position: 'absolute',
-    top: 175,
-    height: 350,
-    width: 450,
-    zIndex: -1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 700,
+    width: 500    
   },
   secondaryText: {
     fontSize: 10,
@@ -227,12 +238,10 @@ const styles = StyleSheet.create({
   },
   locationsBox: {
     display: 'flex',
+    width: "100%",    
     zIndex: 100000,
     backgroundColor: '#FFFFFF',
-    padding: 0,
-    position: 'absolute',
-    top: 135,
-    width: '100%',
+    padding: 0,        
   },
   nextButton: {
     marginTop: 20,
@@ -259,14 +268,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   HeaderText: {
-    color: 'teal',
-    fontSize: 14,
+    color: 'red',
+    fontSize: 18,
     fontWeight: 'bold',
   },
-  Screen: {
-    marginTop: '15%',
-    backgroundColor: 'white',
-    paddingLeft: 10,
-    paddingRight: 10,
+  Screen: {    
+    backgroundColor: 'white',     
   },
 });

@@ -22,10 +22,11 @@ export default class LoginScreen extends Component {
   }
 
   async phoneLogin() {
-    this.setState({ loading: true });
-    const { mobile } = this.state;
+    this.setState({ loading: true });        
+    const {mobile} = this.state;    
     try {
       const confirmResult = await initiatePhoneAuth(mobile);
+      console.log(confirmResult);
       this.setState({ loading: false });
       NavigationService.navigate('LoginOTPScreen', {
         mobile,
@@ -40,7 +41,7 @@ export default class LoginScreen extends Component {
   }
 
   inputHandler(text) {
-    this.setState({ flag: false, mobile: `+91${text}` });
+    this.setState({ flag: false, mobile: `+91${text}` });    
     if (text.length == 10) {
       this.setState({ flag: true });
     }

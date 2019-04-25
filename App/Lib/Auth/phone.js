@@ -8,10 +8,10 @@ import firebase from 'react-native-firebase';
 // Utils:
 import validatePhoneNumber from './validatePhone';
 
-export async function initiatePhoneAuth(phoneNumber) {
+export async function initiatePhoneAuth(phoneNumber) {	
 	try {
 		const validPhoneNumber = await validatePhoneNumber(phoneNumber);
-		if (!validatePhoneNumber) throw new Error('InvalidPhoneNumber');
+		if (!validatePhoneNumber) throw new Error('InvalidPhoneNumber');		
 		const confirmResult = await firebase.auth().signInWithPhoneNumber(phoneNumber);
 		return confirmResult;
 	} catch (e) {
