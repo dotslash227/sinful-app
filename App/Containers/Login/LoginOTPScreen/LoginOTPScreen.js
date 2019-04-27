@@ -13,7 +13,7 @@ import { loginUser } from 'App/Stores/User/Actions';
 
 // Lib
 import { validateOTP } from 'App/Lib/Auth/phone';
-import { getUserProfileById } from 'App/Lib/Users';
+import { getUserProfile, updateProfileDetails } from 'App/Lib/Users';
 
 class LoginOTPScreen extends Component {
   constructor(props) {
@@ -40,9 +40,11 @@ class LoginOTPScreen extends Component {
     const { otp, confirmResult } = this.state;
     try {
       const user = await validateOTP(confirmResult, otp);
+      console.log({ user });
       const { uid } = user;
-      const userProfile = await getUserProfileById(uid);
+      const userProfile = await getUserProfile();
       this.props.loginUser({ isLoggedIn: true, userId: String(uid), profile: userProfile });
+      console.log({ userProfile });
       if (!userProfile.name || !userProfile.email) NavigationService.navigate('Signup');
       else if (!userProfile.addresses || !userProfile.addresses.length)
         NavigationService.navigate('AddressChooser');

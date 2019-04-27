@@ -1,13 +1,22 @@
 import commonLib from 'App/Lib/common';
 import firebase from 'react-native-firebase';
 
+const auth = firebase.auth();
 const db = firebase.firestore();
 const profileDb = db.collection('Profile');
 
-export async function getUserProfileById(id) {
+function getCurrentUser() {
+	return firebase.auth().currentUser;
+}
+
+export async function getUserProfile() {
 	try {
-		const getUser = await profileDb.doc(String(id)).get();
-		if (!getUser.exists) return await createEmptyUserProfile(id);
+		const { uid } = getCurrentUser();
+		const getUser = await db
+			.collection('Profile')
+			.doc(String(uid))
+			.get();
+		if (!getUser.exists) return await createEmptyUserProfile(uid);
 		else return getUser.data();
 	} catch (e) {
 		commonLib.report(e);
@@ -27,5 +36,18 @@ async function createEmptyUserProfile(id) {
 	} catch (e) {
 		commonLib.report(e);
 		return emptyProfile;
+	}
+}
+
+export async function updateProfileDetails({ name, email }) {
+	try {
+		const { uid } = getCurrentUser();
+		const update = await profileDb.doc(String(uid)).update({
+			name: commonLib.normalizeString(name, 'name'),
+			email: commonLib.normalizeString(email, 'email'),
+		});
+	} catch (e) {
+		commonLib.report(e.message);
+		throw new Error(e.message);
 	}
 }
