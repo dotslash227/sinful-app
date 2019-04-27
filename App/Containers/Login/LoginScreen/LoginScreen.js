@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
+import { connect } from 'react-redux';
 import NavigationService from 'App/Services/NavigationService';
 import { Container, Button, Item, Input, Form, Label } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
@@ -9,7 +10,7 @@ import SpinnerView from 'App/Components/Spinner';
 // API:
 import { initiatePhoneAuth } from 'App/Lib/Auth/phone';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,9 +22,11 @@ export default class LoginScreen extends Component {
     };
   }
 
+  componentWillMount() {}
+
   async phoneLogin() {
-    this.setState({ loading: true });        
-    const {mobile} = this.state;    
+    this.setState({ loading: true });
+    const { mobile } = this.state;
     try {
       const confirmResult = await initiatePhoneAuth(mobile);
       console.log(confirmResult);
@@ -41,7 +44,7 @@ export default class LoginScreen extends Component {
   }
 
   inputHandler(text) {
-    this.setState({ flag: false, mobile: `+91${text}` });    
+    this.setState({ flag: false, mobile: `+91${text}` });
     if (text.length == 10) {
       this.setState({ flag: true });
     }
@@ -102,3 +105,10 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps)(LoginScreen);
