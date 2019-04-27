@@ -5,10 +5,16 @@ import { Button, Container, Content, Item, Input, Form, Label } from 'native-bas
 import SpinnerView from 'App/Components/Spinner';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 
+// redux:
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { loginUser } from 'App/Stores/User/Actions';
+
 // Lib
 import { validateOTP } from 'App/Lib/Auth/phone';
+import { getUserProfileById } from 'App/Lib/Users';
 
-export default class LoginOTPScreen extends Component {
+class LoginOTPScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,9 +39,15 @@ export default class LoginOTPScreen extends Component {
     const { otp, confirmResult } = this.state;
     try {
       const user = await validateOTP(confirmResult, otp);
+      const { uid } = user;
+      const userProfile = await getUserProfileById(uid);
       // TODO: Add user to store
       // TODO: Decide if to send to Signup or Home according to profile completion.
-      NavigationService.navigate('Signup');
+      this.props.loginUser({ isLoggedIn: true, userId: String(uid), profile: userProfile });
+      if (!userProfile.name || !userProfile.email) NavigationService.navigate('Signup');
+      else if (!userProfile.addresses || !userProfile.addresses.length)
+        NavigationService.navigate('AddressChooser');
+      else NavigationService.navigate('Home');
     } catch (e) {
       alert('Invalid OTP');
       this.setState({ loading: false, invalidOTP: true });
@@ -162,3 +174,21 @@ const styles = StyleSheet.create({
     height: 300,
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      loginUser,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginOTPScreen);
