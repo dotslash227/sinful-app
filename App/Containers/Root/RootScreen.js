@@ -3,6 +3,7 @@ import { createStackNavigator, createAppContainer, createSwitchNavigator } from 
 import NavigationService from 'App/Services/NavigationService';
 import { View } from 'react-native';
 import styles from './RootScreenStyle';
+import FlashMessage from 'react-native-flash-message';
 
 import SplashScreen from 'App/Containers/SplashScreen/SplashScreen';
 import { connect } from 'react-redux';
@@ -63,6 +64,7 @@ class RootScreen extends Component {
               NavigationService.setTopLevelNavigator(navigatorRef);
             }}
           />
+          <FlashMessage position="top" />
         </View>
       </StyleProvider>
     );

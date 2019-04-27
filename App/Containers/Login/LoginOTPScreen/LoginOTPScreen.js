@@ -4,6 +4,7 @@ import NavigationService from 'App/Services/NavigationService';
 import { Button, Container, Content, Item, Input, Form, Label } from 'native-base';
 import SpinnerView from 'App/Components/Spinner';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { showMessage, hideMessage } from 'react-native-flash-message';
 
 // redux:
 import { connect } from 'react-redux';
@@ -48,7 +49,10 @@ class LoginOTPScreen extends Component {
       else NavigationService.navigate('Home');
     } catch (e) {
       console.log(e);
-      Alert.alert('Invalid OTP');
+      showMessage({
+        message: 'Invalid OTP',
+        type: 'danger',
+      });
       this.setState({ loading: false, invalidOTP: true });
     }
   }

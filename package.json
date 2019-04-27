@@ -26,6 +26,7 @@
     "react": "16.8.3",
     "react-native": "0.59.4",
     "react-native-firebase": "^5.3.1",
+    "react-native-flash-message": "^0.1.12",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-places": "https://github.com/congnguyen91/react-native-google-places",
     "react-native-maps": "^0.24.0",

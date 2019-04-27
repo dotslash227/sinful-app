@@ -86,7 +86,7 @@ export default {
   iosStatusbar: 'dark-content',
   statusBarColor: 'rgba(255,255,255,1)',
   darkenHeader: '#F0F0F0',
-  iconFamily: null,
+  iconFamily: 'Feather',
   iconFontSize: 30,
   iconHeaderSize: 29,
   inputFontSize: 17,
