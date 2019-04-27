@@ -1,36 +1,36 @@
 import React from 'react';
 import { Platform, Text, View, Button } from 'react-native';
 import { Container, Content, Icon } from 'native-base';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createStackNavigator,
+} from 'react-navigation';
 
-// Components:
-import HeaderComponent from 'App/Components/Header';
-import FooterComponent from 'App/Components/Footer';
+// Screens:
+import RestaurantsScreens from './Restaurants';
+import CartScreens from './Cart';
+import SettingsScreens from './Settings';
 
-class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <Container>
-        <HeaderComponent title="Home" />
-        <Content />
-      </Container>
-    );
-  }
-}
+// Stacks:
+const defaultSettings = {
+  defaultNavigationOptions: () => ({ header: null }),
+};
+const RestaurantsStack = createStackNavigator(RestaurantsScreens, defaultSettings);
+const CartStack = createStackNavigator(CartScreens, defaultSettings);
+const SettingsStack = createStackNavigator(SettingsScreens, defaultSettings);
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Restaurants: HomeScreen,
-    Cart: HomeScreen,
-    Settings: HomeScreen,
+    Restaurants: RestaurantsStack,
+    Cart: CartStack,
+    Settings: SettingsStack,
   },
   {
     initialRouteName: 'Restaurants',
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    }),
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
@@ -42,10 +42,9 @@ const TabNavigator = createBottomTabNavigator(
         } else if (routeName === 'Settings') {
           iconName = `user`;
         }
-        // You can return any component that you like here!
-        console.log({ tintColor });
         return <Icon name={iconName} size={22} style={{ color: tintColor }} />;
       },
+      header: null,
     }),
     tabBarOptions: {
       activeTintColor: 'red',

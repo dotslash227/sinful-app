@@ -1,16 +1,6 @@
-class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+import Restaurants from './Restaurants';
 
-  render() {
-    return (
-      <Container>
-        <HeaderComponent title="Home" />
-        <Content />
-        <FooterComponent />
-      </Container>
-    );
-  }
-}
+export default {
+  Restaurants: Restaurants,
+  //Menu: Restaurants,
+};
