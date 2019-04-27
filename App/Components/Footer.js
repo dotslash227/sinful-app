@@ -1,31 +1,28 @@
-import React from 'react'
-import { Footer, FooterTab, Icon, Button } from 'native-base'
+import React from 'react';
+import { Footer, FooterTab, Icon, Button } from 'native-base';
 
 export default class FooterComponent extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {}
+    this.state = {};
   }
 
   render() {
     return (
       <Footer>
         <FooterTab>
-          <Button>
-            <Icon name="apps" />
-          </Button>
-          <Button>
-            <Icon name="camera" />
-          </Button>
           <Button active>
-            <Icon active name="navigate" />
+            <Icon active name="home" />
           </Button>
           <Button>
-            <Icon name="person" />
+            <Icon name="layers" />
+          </Button>
+          <Button>
+            <Icon name="user" />
           </Button>
         </FooterTab>
       </Footer>
-    )
+    );
   }
 }
