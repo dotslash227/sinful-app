@@ -1,8 +1,11 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import styles from './SplashScreenStyle'
+import React from 'react';
+import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import styles from './SplashScreenStyle';
+import NavigationService from 'App/Services/NavigationService';
 
-export default class SplashScreen extends React.Component {
+class SplashScreen extends React.Component {
+  componentDidMount() {}
   render() {
     return (
       <View style={styles.container}>
@@ -11,6 +14,13 @@ export default class SplashScreen extends React.Component {
           <Text>Momos Now</Text>
         </View>
       </View>
-    )
+    );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps)(SplashScreen);

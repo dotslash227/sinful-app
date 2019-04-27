@@ -43,6 +43,7 @@ target 'Sinful' do
   pod 'Firebase/Auth', '~> 5.15.0'
   pod 'Fabric', '~> 1.7.13'
   pod 'Crashlytics', '~> 3.10.7'
+  pod 'Firebase/Firestore', '~> 5.15.0'
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 

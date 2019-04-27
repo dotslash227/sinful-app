@@ -12,6 +12,8 @@
     "lint-check": "eslint .",
     "ios": "react-native run-ios --simulator='iPhone 8'",
     "android": "react-native run-android",
+    "android:menu": "adb shell input keyevent KEYCODE_MENU",
+    "devtools": "adb reverse tcp:8097 tcp:8097 && react-devtools &",
     "postinstall": "patch-package",
     "abhishek:android": "adb devices && adb -s ZY322DDWPJ reverse tcp:8081 tcp:8081 && react-native run-android"
   },
@@ -24,6 +26,7 @@
     "react": "16.8.3",
     "react-native": "0.59.4",
     "react-native-firebase": "^5.3.1",
+    "react-native-flash-message": "^0.1.12",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-google-places": "https://github.com/congnguyen91/react-native-google-places",
     "react-native-maps": "^0.24.0",

@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableHighlight, Image } from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableHighlight, Image, Alert } from 'react-native';
 import NavigationService from 'App/Services/NavigationService';
 import { Button, Container, Content, Item, Input, Form, Label } from 'native-base';
 import SpinnerView from 'App/Components/Spinner';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { showMessage, hideMessage } from 'react-native-flash-message';
+
+// redux:
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { loginUser } from 'App/Stores/User/Actions';
 
 // Lib
 import { validateOTP } from 'App/Lib/Auth/phone';
+import { getUserProfileById } from 'App/Lib/Users';
 
-export default class LoginOTPScreen extends Component {
+class LoginOTPScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,11 +40,19 @@ export default class LoginOTPScreen extends Component {
     const { otp, confirmResult } = this.state;
     try {
       const user = await validateOTP(confirmResult, otp);
-      // TODO: Add user to store
-      // TODO: Decide if to send to Signup or Home according to profile completion.
-      NavigationService.navigate('Signup');
+      const { uid } = user;
+      const userProfile = await getUserProfileById(uid);
+      this.props.loginUser({ isLoggedIn: true, userId: String(uid), profile: userProfile });
+      if (!userProfile.name || !userProfile.email) NavigationService.navigate('Signup');
+      else if (!userProfile.addresses || !userProfile.addresses.length)
+        NavigationService.navigate('AddressChooser');
+      else NavigationService.navigate('Home');
     } catch (e) {
-      alert('Invalid OTP');
+      console.log(e);
+      showMessage({
+        message: 'Invalid OTP',
+        type: 'danger',
+      });
       this.setState({ loading: false, invalidOTP: true });
     }
   }
@@ -76,42 +91,6 @@ export default class LoginOTPScreen extends Component {
           <Button full disabled={!this.state.flag} onPress={() => this.verifyOTP()}>
             <Text style={{ color: '#fff' }}>Verify OTP</Text>
           </Button>
-          {/*<Content>
-            <Image source={require('../../../Images/logo-2.png')} style={styles.logo} />
-
-            <Item>
-              <Input
-                placeholder="Pleas enter the OTP"
-                style={styles.otpInput}
-                onChangeText={(text) => this.otpInputHandler(text)}
-              />
-            </Item>
-
-            <View style={styles.msgBox}>
-              <TouchableHighlight
-                onPress={() => {
-                  this.props.navigation.goBack()
-                }}
-              >
-                <View>
-                  <Text style={styles.center}>The mobile number you entered was {this.mobile}</Text>
-                  <Text style={styles.center}>Click on this box to edit number</Text>
-                </View>
-              </TouchableHighlight>
-            </View>
-
-            {this.renderErrors()}
-
-            <Button
-              danger
-              bordered
-              style={styles.button}
-              disabled={!this.state.flag}
-              onPress={() => this.verifyOTP()}
-            >
-              <Text style={styles.buttonText}>Submit OTP and Continue</Text>
-            </Button>
-          </Content>*/}
         </Container>
       );
     }
@@ -162,3 +141,21 @@ const styles = StyleSheet.create({
     height: 300,
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      loginUser,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginOTPScreen);
