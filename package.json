@@ -13,6 +13,7 @@
     "ios": "react-native run-ios --simulator='iPhone 8'",
     "android": "react-native run-android",
     "android:menu": "adb shell input keyevent KEYCODE_MENU",
+    "devtools": "adb reverse tcp:8097 tcp:8097 && react-devtools &",
     "postinstall": "patch-package",
     "abhishek:android": "adb devices && adb -s ZY322DDWPJ reverse tcp:8081 tcp:8081 && react-native run-android"
   },
