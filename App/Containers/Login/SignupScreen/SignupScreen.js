@@ -9,9 +9,17 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateUserProfile } from 'App/Stores/User/Actions';
+
 import NavigationService from 'App/Services/NavigationService';
 import { Button, Container, Grid, Col, Row, Content } from 'native-base';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+
+// Components
+import SpinnerView from 'App/Components/Spinner';
 
 // Lib
 import { getUserProfile, updateProfileDetails } from 'App/Lib/Users';
@@ -37,16 +45,21 @@ class MomoObject extends Component {
   }
 }
 
-export default class SignupScreen extends Component {
+class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       fullName: '',
       email: '',
       momoCount: 0,
       selectedMomos: [],
       flag: false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({ loading: false });
   }
 
   checkFlagStatus() {
@@ -131,15 +144,18 @@ export default class SignupScreen extends Component {
   }
 
   async goToAddressChooser() {
+    this.setState({ loading: true });
     try {
       const { fullName, email } = this.state;
-      const update = await updateProfileDetails({ name: fullName, email: email });
-      const user = await getUserProfile();
+      const profile = await updateProfileDetails({ name: fullName, email: email });
+      console.log({ profile });
+      this.props.updateUserProfile({ name: profile.name, email: profile.email });
       NavigationService.navigate('AddressChooser', {
         fullName: this.state.fullName,
         email: this.state.email,
       });
     } catch (e) {
+      this.setState({ loading: false });
       console.log(e);
       showMessage({
         message: 'Something went wrong',
@@ -149,6 +165,10 @@ export default class SignupScreen extends Component {
   }
 
   render() {
+    const { loading } = this.state;
+    if (loading) {
+      return <SpinnerView />;
+    }
     return (
       <Container style={styles.Screen}>
         <Content>
@@ -250,3 +270,21 @@ const styles = StyleSheet.create({
     color: 'teal',
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updateUserProfile,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignupScreen);

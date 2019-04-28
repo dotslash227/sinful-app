@@ -22,7 +22,18 @@ class LoginScreen extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    const { user } = this.props;
+    const { isLoggedIn, profile, userId } = user;
+    if (isLoggedIn && (!profile.name || !profile.email)) {
+      NavigationService.navigateAndReset('Signup');
+    } else if (isLoggedIn && (!profile.addresses || !profile.addresses.length)) {
+      console.log('Sending to Address Chooser');
+      NavigationService.navigateAndReset('AddressChooser');
+    } else if (isLoggedIn) {
+      NavigationService.navigateAndReset('Home');
+    }
+  }
 
   async phoneLogin() {
     this.setState({ loading: true });

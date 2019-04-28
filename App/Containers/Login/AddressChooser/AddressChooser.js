@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateAddresses } from 'App/Stores/User/Actions';
+
 import NavigationService from 'App/Services/NavigationService';
 import {
   Container,
-  Grid,
-  Row,
-  Col,
   Icon,
   Form,
   Input,
@@ -16,10 +18,17 @@ import {
   Footer,
   Content,
 } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import SpinnerView from 'App/Components/Spinner';
 import Permissions from 'react-native-permissions';
+
+// Components
+import SpinnerView from 'App/Components/Spinner';
+import FormHeader from 'App/Components/Form/FormHeader';
+
+// Lib
+import { getUserProfile, addAddressToProfile } from 'App/Lib/Users';
 
 export class LocationBar extends Component {
   constructor(props) {
@@ -46,7 +55,7 @@ export class LocationBar extends Component {
   }
 }
 
-export default class AddressChooser extends Component {
+class AddressChooser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,10 +72,21 @@ export default class AddressChooser extends Component {
       loading: true,
       latlng: '',
       flag: false,
+      heights: {
+        firstRowHeight: 300,
+        secondRowHeight: 300,
+      },
     };
   }
 
   async componentDidMount() {
+    let { heights } = this.state;
+    const firstRowHeight = 300;
+    const secondRowHeight = Dimensions.get('window').height
+      ? Dimensions.get('window').height - firstRowHeight
+      : 300;
+    heights = { firstRowHeight, secondRowHeight };
+    this.setState({ heights });
     try {
       const checkPermission = await Permissions.check('location');
       if (checkPermission !== 'authorized') {
@@ -79,7 +99,7 @@ export default class AddressChooser extends Component {
         userLat: result[0].location.latitude,
         userLong: result[0].location.longitude,
         latlng: { latitude: result[0].location.latitude, longitude: result[0].location.longitude },
-      });      
+      });
     } catch (e) {
       console.log(e.message);
     }
@@ -111,7 +131,7 @@ export default class AddressChooser extends Component {
       longitude: this.state.userLong,
       radius: 10,
     })
-      .then((results) => {        
+      .then((results) => {
         this.setState({ locations: results, showLocations: true });
         console.log(this.state);
       })
@@ -120,49 +140,56 @@ export default class AddressChooser extends Component {
     if ((this.state.locality = '')) this.setState({ showLocations: false });
   }
 
+  async saveAddress() {
+    this.setState({ loading: true });
+    const { locality, pickedLocation, houseNumber } = this.state;
+    const { latitude, longitude } = pickedLocation;
+    const address = {
+      name: 'Home',
+      houseNo: houseNumber,
+      address: locality,
+      geoLoc: {
+        lat: latitude,
+        lng: longitude,
+      },
+    };
+    try {
+      const { addresses } = await addAddressToProfile(address);
+      this.props.updateAddresses({ addresses });
+      this.setState({ loading: false });
+      NavigationService.navigateAndReset('Home');
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+      alert('UnexpectedError');
+    }
+  }
+
   render() {
+    const { user } = this.props;
+    const { heights } = this.state;
+    let isButtonDisabled = true;
+    const { locality, pickedLocation, houseNumber } = this.state;
+    const { latitude, longitude } = pickedLocation;
+    if ((locality, houseNumber, latitude, longitude)) isButtonDisabled = false;
+
     if (this.state.loading == true) {
       return <SpinnerView />;
     } else {
       return (
-        <Container style={styles.Screen}>
-          <View>            
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                region={{
-                  latitude:
-                    this.state.pickedLocation == ''
-                      ? this.state.userLat
-                      : this.state.pickedLocation.latitude,
-                  longitude:
-                    this.state.pickedLocation == ''
-                      ? this.state.userLong
-                      : this.state.pickedLocation.longitude,
-                latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421,
-                }}
-                showsUserLocation={true}
-                minZoomLevel={10}
-                maxZoomLevel={20}
-              >
-                <Marker coordinate={this.state.latlng} draggable />
-              </MapView>
-              
-            </View>    
-
-
-          <Content style={{paddingLeft: 10, paddingRight: 10, marginTop: 10}}>          
-            <View>
-              <Text style={styles.HeaderText}>
-                Hello {this.state.name}, we are almost done, we just need your delivery address and
-                location
-              </Text>
-            </View>
-
-            <View>
+        <Container>
+          <Content>
+            <View
+              style={{
+                height: heights.firstRowHeight,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                paddingRight: 10,
+              }}
+            >
               <Form>
-                <Item floatingLabel last style={styles.SearchBar}>
+                <FormHeader title="Address" subtitle="Tell us where we should deliver" />
+                <Item floatingLabel>
                   <Label>Enter House Number</Label>
                   <Input
                     onChangeText={(text) => {
@@ -172,7 +199,7 @@ export default class AddressChooser extends Component {
                     spellCheck={false}
                   />
                 </Item>
-                <Item floatingLabel last style={styles.SearchBar}>
+                <Item floatingLabel>
                   <Label>Enter Locality with City</Label>
                   <Input
                     onChangeText={(text) => {
@@ -183,44 +210,58 @@ export default class AddressChooser extends Component {
                     value={this.state.locality}
                   />
                 </Item>
-              </Form>              
-            </View>
-
-            <View style={this.state.showLocations ? [styles.locationsBox] : [styles.hideBox]}>
-              <LocationBar
-                locations={this.state.locations}
-                onPress={(location) => {
-                  this.locationPickerHandler(location);
-                }}
-              />
+              </Form>
+              <View style={this.state.showLocations ? [styles.locationsBox] : [styles.hideBox]}>
+                <LocationBar
+                  locations={this.state.locations}
+                  onPress={(location) => {
+                    this.locationPickerHandler(location);
+                  }}
+                />
               </View>
-                            
-              <Footer style={{ position: 'absolute', top: 500 }}>
-              <FooterTab>                
-              </FooterTab>
-            </Footer>            
-                                         
+            </View>
+            <View style={{ height: heights.secondRowHeight }}>
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                style={{ flex: 1, bottom: 0, height: heights.secondRowHeight }}
+                region={{
+                  latitude:
+                    this.state.pickedLocation == ''
+                      ? this.state.userLat
+                      : this.state.pickedLocation.latitude,
+                  longitude:
+                    this.state.pickedLocation == ''
+                      ? this.state.userLong
+                      : this.state.pickedLocation.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                showsUserLocation={true}
+                minZoomLevel={10}
+                maxZoomLevel={20}
+              >
+                <Marker coordinate={this.state.latlng} />
+              </MapView>
+            </View>
           </Content>
-
-          <Button full disabled style={styles.nextButton}>
+          <Button
+            full
+            disabled={isButtonDisabled}
+            style={styles.nextButton}
+            onPress={() => this.saveAddress()}
+          >
             <Text>Signup</Text>
           </Button>
-
         </Container>
       );
     }
   }
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
   map: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 700,
-    width: 500    
+    flex: 1,
+    height: 200,
   },
   secondaryText: {
     fontSize: 10,
@@ -238,10 +279,10 @@ const styles = StyleSheet.create({
   },
   locationsBox: {
     display: 'flex',
-    width: "100%",    
+    //width: '100%',
     zIndex: 100000,
     backgroundColor: '#FFFFFF',
-    padding: 0,        
+    padding: 0,
   },
   nextButton: {
     marginTop: 20,
@@ -260,19 +301,31 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     position: 'relative',
   },
-  SearchBar: {
-    borderBottomColor: 'teal',
-    justifyContent: 'center',
-    textAlign: 'left',
-    width: '100%',
-    fontSize: 12,
-  },
+  SearchBar: {},
   HeaderText: {
     color: 'red',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  Screen: {    
-    backgroundColor: 'white',     
+  Screen: {
+    backgroundColor: 'white',
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      updateAddresses,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddressChooser);

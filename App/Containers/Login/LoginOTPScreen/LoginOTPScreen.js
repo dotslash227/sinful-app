@@ -40,7 +40,6 @@ class LoginOTPScreen extends Component {
     const { otp, confirmResult } = this.state;
     try {
       const user = await validateOTP(confirmResult, otp);
-      console.log({ user });
       const { uid } = user;
       const userProfile = await getUserProfile();
       this.props.loginUser({ isLoggedIn: true, userId: String(uid), profile: userProfile });

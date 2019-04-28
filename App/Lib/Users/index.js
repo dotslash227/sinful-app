@@ -5,6 +5,9 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const profileDb = db.collection('Profile');
 
+// Addresses:
+import { validateAddress } from './address';
+
 function getCurrentUser() {
 	return firebase.auth().currentUser;
 }
@@ -42,12 +45,36 @@ async function createEmptyUserProfile(id) {
 export async function updateProfileDetails({ name, email }) {
 	try {
 		const { uid } = getCurrentUser();
-		const update = await profileDb.doc(String(uid)).update({
+		const updateObj = {
 			name: commonLib.normalizeString(name, 'name'),
 			email: commonLib.normalizeString(email, 'email'),
-		});
+		};
+		const update = await profileDb.doc(String(uid)).update(updateObj);
+		return updateObj;
 	} catch (e) {
 		commonLib.report(e.message);
 		throw new Error(e.message);
 	}
+}
+
+export async function addAddressToProfile(address) {
+	try {
+		const isValid = validateAddress(address);
+		if (!isValid) throw new Error('InvalidAddress');
+		const { uid } = getCurrentUser();
+		const getUser = await profileDb.doc(String(uid)).get();
+		if (!getUser.exists) throw new Error('InvalidUser');
+		const profile = getUser.data();
+		let addresses = profile.addresses || [];
+		addresses.push(address);
+		const update = await profileDb.doc(String(uid)).update({
+			addresses,
+		});
+		return { addresses };
+	} catch (e) {
+		console.log(e);
+		commonLib.report(e.message);
+		throw new Error('UnexpectedError');
+	}
+	// TODO: Upload Address and Update State
 }
