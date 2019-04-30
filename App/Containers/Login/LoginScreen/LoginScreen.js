@@ -106,7 +106,7 @@ class LoginScreen extends Component {
 
 const styles = StyleSheet.create({
   topRow: {
-    backgroundColor: 'rgba(226,62,87,1)',
+    backgroundColor: '#ea5455',
   },
   errorBox: {
     padding: 15,
