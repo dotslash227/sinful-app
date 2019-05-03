@@ -12,6 +12,16 @@ function getCurrentUser() {
 	return firebase.auth().currentUser;
 }
 
+export async function logoutCurrentUser() {
+	try {
+		const logout = await firebase.auth().signOut();
+		return true;
+	} catch (e) {
+		console.log(e);
+		return false;
+	}
+}
+
 export async function getUserProfile() {
 	try {
 		const { uid } = getCurrentUser();

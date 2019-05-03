@@ -21,6 +21,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
     case 'USER_UPDATE_ADDRESSES':
       newState = { ...state, profile: { ...state.profile, ...action.payload } };
       return newState;
+    case 'LOGOUT_USER':
+      return INITIAL_STATE;
     default:
       return state;
   }

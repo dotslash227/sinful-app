@@ -12,3 +12,8 @@ export const updateAddresses = ({ addresses }) => ({
 	type: 'USER_UPDATE_ADDRESSES',
 	payload: { addresses },
 });
+
+export const logoutUser = () => ({
+	type: 'LOGOUT_USER',
+	payload: {},
+});

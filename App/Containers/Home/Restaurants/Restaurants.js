@@ -22,7 +22,6 @@ class RestaurantsScreen extends React.Component {
 	}
 
 	render() {
-		console.log({ props: this.props });
 		const { items } = this.props.restaurants;
 		const list = items.map((r) => {
 			return (
