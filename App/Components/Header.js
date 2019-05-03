@@ -14,11 +14,11 @@ export default class HeaderComponent extends React.Component {
 		return (
 			<Header>
 				<StatusBar barStyle="dark-content" />
-				<Left style={{ flex: 1 }} />
+				<Left style={{ flex: 1 }}>{leftComponent}</Left>
 				<Body style={{ flex: 1, alignItems: 'center' }}>
 					<Title>{title}</Title>
 				</Body>
-				<Right style={{ flex: 1 }} />
+				<Right style={{ flex: 1 }}>{rightComponent}</Right>
 			</Header>
 		);
 	}

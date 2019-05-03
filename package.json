@@ -32,6 +32,7 @@
     "react-native-google-places": "https://github.com/congnguyen91/react-native-google-places",
     "react-native-maps": "^0.24.0",
     "react-native-permissions": "^1.1.1",
+    "react-native-super-grid": "^3.0.4",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "3.1.2",
     "react-redux": "6.0.0",

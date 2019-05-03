@@ -9,10 +9,15 @@ export default class RestaurantCard extends React.Component {
 		this.state = {};
 	}
 	render() {
-		const { restaurant } = this.props;
+		const { restaurant, disableArrow } = this.props;
 		const { id, name, pictureUrl, placeName, deliveryTime } = restaurant;
+		const rightIcon = disableArrow ? null : (
+			<Col style={styles.rightIcon}>
+				<Icon style={{ color: '#999' }} name="arrow-right" />
+			</Col>
+		);
 		return (
-			<View key={id} style={styles.card}>
+			<View style={styles.card}>
 				<Grid>
 					<Col style={styles.picture}>
 						<Image source={{ uri: pictureUrl }} style={{ height: 80, width: 80 }} />
@@ -24,9 +29,7 @@ export default class RestaurantCard extends React.Component {
 							<Icon style={styles.infoIcon} name="map-pin" /> {placeName}
 						</Text>
 					</Col>
-					<Col style={styles.rightIcon}>
-						<Icon style={{ color: '#999' }} name="arrow-right" />
-					</Col>
+					{rightIcon}
 				</Grid>
 			</View>
 		);
