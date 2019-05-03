@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
 import configureStore from './CreateStore';
 import rootSaga from 'App/Sagas';
+
+// Reducers
 import userReducer from './User/Reducers';
+import restaurantsReducer from './Restaurants/Reducers';
 
 export default () => {
 	const rootReducer = combineReducers({
@@ -10,6 +13,7 @@ export default () => {
 		 * @see https://redux.js.org/api-reference/combinereducers
 		 */
 		user: userReducer,
+		restaurants: restaurantsReducer,
 	});
 
 	return configureStore(rootReducer, rootSaga);
