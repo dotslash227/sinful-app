@@ -13,9 +13,7 @@ class RestaurantsScreen extends React.Component {
 		this.state = {};
 	}
 
-	componentDidMount() {
-		this.props.navigation.navigate('MenuScreen'); // TEST
-	}
+	componentDidMount() {}
 
 	goToMenu(restaurantId) {
 		this.props.navigation.navigate('MenuScreen', {
