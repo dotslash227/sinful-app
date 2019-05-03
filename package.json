@@ -13,6 +13,7 @@
     "ios": "react-native run-ios --simulator='iPhone 8'",
     "android": "react-native run-android",
     "android:menu": "adb shell input keyevent KEYCODE_MENU",
+    "android:reload": "adb shell input text 'RR'",
     "devtools": "adb reverse tcp:8097 tcp:8097 && react-devtools &",
     "postinstall": "patch-package",
     "abhishek:android": "adb devices && adb -s ZY322DDWPJ reverse tcp:8081 tcp:8081 && react-native run-android"
@@ -53,6 +54,7 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-react-native": "^3.2.1",
     "eslint-plugin-standard": "^3.0.1",
+    "faker": "^4.1.0",
     "jest": "23.3.0",
     "metro-react-native-babel-preset": "^0.45.0",
     "patch-package": "^6.1.2",
