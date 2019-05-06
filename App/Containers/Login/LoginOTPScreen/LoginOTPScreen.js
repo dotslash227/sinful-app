@@ -53,7 +53,7 @@ class LoginOTPScreen extends Component {
       clearInterval(interval);
     }, OTPTimeout * 1000);
     // Android Auto Verification:
-    this.unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+    /*this.unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         const { uid } = user;
         const userProfile = await getUserProfile();
@@ -64,12 +64,13 @@ class LoginOTPScreen extends Component {
           NavigationService.navigate('AddressChooser');
         else NavigationService.navigate('Home');
       }
-    });
+    });*/
   }
 
   async verifyOTP() {
     this.setState({ loading: true });
     const { otp, confirmResult } = this.state;
+    console.log('Verifying OTP', otp);
     try {
       const user = await validateOTP(confirmResult, otp);
       const { uid } = user;
@@ -94,7 +95,6 @@ class LoginOTPScreen extends Component {
     this.setState({ flag: false, otp: text });
     if (text.length === 6) {
       this.setState({ flag: true });
-      this.verifyOTP(); // Automatically Submit OTP
     }
   }
 
