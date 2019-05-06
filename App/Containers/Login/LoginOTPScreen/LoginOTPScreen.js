@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import { loginUser } from 'App/Stores/User/Actions';
 
 // Lib
-//import firebase from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import { validateOTP, resendOTP } from 'App/Lib/Auth/phone';
 import { getUserProfile, updateProfileDetails } from 'App/Lib/Users';
 
@@ -24,6 +24,7 @@ const OTPTimeout = 15; // Seconds
 class LoginOTPScreen extends Component {
   constructor(props) {
     super(props);
+    this.unsubscribe = null;
     this.state = {
       isFocused: false,
       otp: '',
@@ -52,7 +53,7 @@ class LoginOTPScreen extends Component {
       clearInterval(interval);
     }, OTPTimeout * 1000);
     // Android Auto Verification:
-    /*this.unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
         const { uid } = user;
         const userProfile = await getUserProfile();
@@ -63,7 +64,11 @@ class LoginOTPScreen extends Component {
           NavigationService.navigate('AddressChooser');
         else NavigationService.navigate('Home');
       }
-    });*/
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
   }
 
   async verifyOTP() {
