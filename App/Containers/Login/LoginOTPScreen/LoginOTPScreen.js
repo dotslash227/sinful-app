@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableHighlight, Image, Alert } from 'react-native';
 import NavigationService from 'App/Services/NavigationService';
-import { Button, Container, Content, Item, Input, Form, Label } from 'native-base';
+import { Button, Container, Content, Item, Input, Form, Label, Row, Grid } from 'native-base';
 import SpinnerView from 'App/Components/Spinner';
-import { Col, Row, Grid } from 'react-native-easy-grid';
 
 // Components
 import { showMessage, hideMessage } from 'react-native-flash-message';
@@ -15,12 +14,12 @@ import { bindActionCreators } from 'redux';
 import { loginUser } from 'App/Stores/User/Actions';
 
 // Lib
-import firebase from 'react-native-firebase';
+//import firebase from 'react-native-firebase';
 import { validateOTP, resendOTP } from 'App/Lib/Auth/phone';
 import { getUserProfile, updateProfileDetails } from 'App/Lib/Users';
 
 // Settings:
-const OTPTimeout = 2; // Seconds
+const OTPTimeout = 15; // Seconds
 
 class LoginOTPScreen extends Component {
   constructor(props) {
