@@ -8,7 +8,7 @@ import firebase from 'react-native-firebase';
 // Utils:
 import validatePhoneNumber from './validatePhone';
 
-export async function initiatePhoneAuth(phoneNumber) {
+async function initiatePhoneAuth(phoneNumber) {
 	try {
 		const validPhoneNumber = await validatePhoneNumber(phoneNumber);
 		if (!validatePhoneNumber) throw new Error('InvalidPhoneNumber');
@@ -21,7 +21,7 @@ export async function initiatePhoneAuth(phoneNumber) {
 	}
 }
 
-export async function validateOTP(confirmResult, otp) {
+async function validateOTP(confirmResult, otp) {
 	try {
 		const user = await confirmResult.confirm(otp);
 		return user;
@@ -30,3 +30,10 @@ export async function validateOTP(confirmResult, otp) {
 		throw new Error('InvalidOTP');
 	}
 }
+
+async function resendOTP(phoneNumber) {
+	const confirmResult = await initiatePhoneAuth(phoneNumber);
+	return confirmResult;
+}
+
+export { initiatePhoneAuth, resendOTP, validateOTP };

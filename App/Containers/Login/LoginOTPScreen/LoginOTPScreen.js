@@ -4,7 +4,10 @@ import NavigationService from 'App/Services/NavigationService';
 import { Button, Container, Content, Item, Input, Form, Label } from 'native-base';
 import SpinnerView from 'App/Components/Spinner';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+
+// Components
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import FormHeader from 'App/Components/Form/FormHeader';
 
 // redux:
 import { connect } from 'react-redux';
@@ -12,8 +15,12 @@ import { bindActionCreators } from 'redux';
 import { loginUser } from 'App/Stores/User/Actions';
 
 // Lib
-import { validateOTP } from 'App/Lib/Auth/phone';
+import firebase from 'react-native-firebase';
+import { validateOTP, resendOTP } from 'App/Lib/Auth/phone';
 import { getUserProfile, updateProfileDetails } from 'App/Lib/Users';
+
+// Settings:
+const OTPTimeout = 2; // Seconds
 
 class LoginOTPScreen extends Component {
   constructor(props) {
@@ -26,13 +33,38 @@ class LoginOTPScreen extends Component {
       loading: false,
       mobile: null,
       confirmResult: null,
+      canResendOTP: false,
+      resentOTP: false,
+      timeLeft: OTPTimeout,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const mobile = this.props.navigation.getParam('mobile');
     const confirmResult = this.props.navigation.getParam('confirmResult');
     this.setState({ mobile, confirmResult });
+    let { timeLeft } = this.state;
+    const interval = setInterval(() => {
+      timeLeft -= 1;
+      this.setState({ timeLeft });
+    }, 1000);
+    setTimeout(() => {
+      this.setState({ canResendOTP: true });
+      clearInterval(interval);
+    }, OTPTimeout * 1000);
+    // Android Auto Verification:
+    this.unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        const { uid } = user;
+        const userProfile = await getUserProfile();
+        this.props.loginUser({ isLoggedIn: true, userId: String(uid), profile: userProfile });
+        console.log({ userProfile });
+        if (!userProfile.name || !userProfile.email) NavigationService.navigate('Signup');
+        else if (!userProfile.addresses || !userProfile.addresses.length)
+          NavigationService.navigate('AddressChooser');
+        else NavigationService.navigate('Home');
+      }
+    });
   }
 
   async verifyOTP() {
@@ -60,8 +92,9 @@ class LoginOTPScreen extends Component {
 
   otpInputHandler(text) {
     this.setState({ flag: false, otp: text });
-    if (text.length > 4) {
+    if (text.length === 6) {
       this.setState({ flag: true });
+      this.verifyOTP(); // Automatically Submit OTP
     }
   }
 
@@ -71,24 +104,70 @@ class LoginOTPScreen extends Component {
     }
   }
 
+  async resendOTP() {
+    const { mobile } = this.state;
+    const confirmResult = await resendOTP(mobile);
+    this.setState({ resentOTP: true, confirmResult });
+    showMessage({
+      message: 'Resent OTP',
+      type: 'info',
+    });
+  }
+
   render() {
+    const { canResendOTP } = this.state;
+    let { timeLeft } = this.state;
     if (this.state.loading) {
       return <SpinnerView />;
     } else {
       return (
         <Container style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <Form style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
-              <Text>Please Enter The One Time Password you received as an SMS</Text>
-              <Item floatingLabel>
-                <Label>OTP</Label>
-                <Input
-                  onChangeText={(text) => this.otpInputHandler(text)}
-                  keyboardType="number-pad"
-                />
-              </Item>
-            </Form>
-          </View>
+          <Grid>
+            <Row style={{ justifyContent: 'flex-start', padding: 10, alignItems: 'flex-end' }}>
+              <FormHeader title="OTP" subtitle="Enter the OTP you recieved on your Phone Number" />
+            </Row>
+            <Row
+              style={{
+                justifyContent: 'flex-start',
+                padding: 10,
+                alignItems: 'flex-start',
+              }}
+            >
+              <Form style={{ flex: 1, alignItems: 'center' }}>
+                <Item floatingLabel>
+                  <Label>
+                    <Text>OTP</Text>
+                  </Label>
+                  <Input
+                    onChangeText={(text) => this.otpInputHandler(text)}
+                    keyboardType="number-pad"
+                  />
+                </Item>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    padding: 10,
+                  }}
+                >
+                  {canResendOTP ? (
+                    <Button
+                      bordered
+                      dark
+                      disabled={this.state.resentOTP}
+                      onPress={() => this.resendOTP()}
+                    >
+                      <Text style={{ paddingLeft: 5, paddingRight: 5 }}>Resend OTP</Text>
+                    </Button>
+                  ) : (
+                    <Text style={{ fontSize: 20 }}>Resend OTP in {timeLeft} seconds</Text>
+                  )}
+                </View>
+              </Form>
+            </Row>
+          </Grid>
           <Button full disabled={!this.state.flag} onPress={() => this.verifyOTP()}>
             <Text style={{ color: '#fff' }}>Verify OTP</Text>
           </Button>
