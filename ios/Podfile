@@ -40,10 +40,10 @@ target 'Sinful' do
 
   # Firebase stuff:
   pod 'Firebase/Core'
-  pod 'Firebase/Auth', '~> 5.15.0'
+  pod 'Firebase/Auth', '~> 5.20.1'
   pod 'Fabric', '~> 1.7.13'
   pod 'Crashlytics', '~> 3.10.7'
-  pod 'Firebase/Firestore', '~> 5.15.0'
+  pod 'Firebase/Firestore', '~> 5.20.1'
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
