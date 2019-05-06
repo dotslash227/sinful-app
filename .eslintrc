@@ -33,6 +33,8 @@
     "react/jsx-uses-vars": 2,
     "react/jsx-indent-props": [2, 2],
     "react/prop-types": [2,{ "skipUndeclared": true}],
-    "react/display-name": [0, { "ignoreTranspilerName": false }]
+    "react/display-name": [0, { "ignoreTranspilerName": false }],
+    "react-native/no-inline-styles": 0,
+    "react-native/no-color-literals": 0,
   }
 }

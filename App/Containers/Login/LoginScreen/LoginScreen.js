@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import NavigationService from 'App/Services/NavigationService';
-import { Container, Button, Item, Input, Form, Label } from 'native-base';
-import { Col, Row, Grid } from 'react-native-easy-grid';
-import axios from 'axios';
+import { Container, Button, Item, Input, Form, Label, Content, Row, Grid } from 'native-base';
+
+// Components
 import SpinnerView from 'App/Components/Spinner';
+import FormHeader from 'App/Components/Form/FormHeader';
 
 // API:
 import { initiatePhoneAuth } from 'App/Lib/Auth/phone';
@@ -24,7 +25,7 @@ class LoginScreen extends Component {
 
   componentWillMount() {
     const { user } = this.props;
-    const { isLoggedIn, profile, userId } = user;
+    const { isLoggedIn, profile } = user;
     if (isLoggedIn && (!profile.name || !profile.email)) {
       NavigationService.navigateAndReset('Signup');
     } else if (isLoggedIn && (!profile.addresses || !profile.addresses.length)) {
@@ -56,7 +57,7 @@ class LoginScreen extends Component {
 
   inputHandler(text) {
     this.setState({ flag: false, mobile: `+91${text}` });
-    if (text.length == 10) {
+    if (text.length === 10) {
       this.setState({ flag: true });
     }
   }
@@ -79,8 +80,10 @@ class LoginScreen extends Component {
       return (
         <Container>
           <Grid>
-            <Row style={styles.topRow} />
-            <Row>
+            <Row style={{ alignItems: 'flex-end' }}>
+              <FormHeader title="Welcome" subtitle="Please enter your Phone Number" />
+            </Row>
+            <Row style={{ alignItems: 'flex-start' }}>
               <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Form>
                   <Item floatingLabel>
