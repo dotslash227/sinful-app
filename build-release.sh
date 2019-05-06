@@ -1,1 +1,1 @@
-cd android && ./gradlew assembleRelease
+cd android && ./gradlew clean && ./gradlew assembleRelease
