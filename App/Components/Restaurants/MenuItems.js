@@ -1,58 +1,66 @@
 import React from 'react';
-import { Image, View, StyleSheet, ImageBackground } from 'react-native';
-import { Card, CardItem, Body, Text, Grid, Row, Col, Icon } from 'native-base';
-
+import { Image, View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { Text, Icon, Button } from 'native-base';
+import { material } from 'react-native-typography';
 import { FlatGrid } from 'react-native-super-grid';
+
+// Fake Data
 import menuItems from 'App/Data/fake-menu-items.json';
 
-export default class MenuItems extends React.Component {
+class MenuItems extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {};
 	}
 	render() {
-		//const { menuItems } = this.props;
+		const { restaurantId } = this.props;
 		return (
-			<FlatGrid
-				itemDimension={130}
-				items={menuItems}
-				style={styles.gridView}
-				// staticDimension={300}
-				// fixed
-				// spacing={20}
-				renderItem={({ item, index }) => (
-					<ImageBackground source={{ uri: item.itemPicture }} style={[styles.itemContainer]}>
-						<Text style={styles.itemName}>{item.itemName}</Text>
-						<Text style={styles.itemCode}>
-							{'\u20B9'} {item.itemPrice}
-						</Text>
-					</ImageBackground>
-				)}
-			/>
+			<View style={{ padding: 10 }}>
+				<FlatGrid
+					items={menuItems}
+					itemDimension={150}
+					renderItem={({ item, index }) => <SingleItem item={item} {...this.props} />}
+				/>
+			</View>
+		);
+	}
+}
+
+class SingleItem extends React.Component {
+	addItem(itemId) {}
+
+	render() {
+		const { item } = this.props;
+		const { itemId, itemPicture, itemName, itemPrice } = item;
+		return (
+			<View>
+				<Image style={styles.itemPicture} source={{ uri: itemPicture }} />
+				<Text style={material.body2}>{itemName}</Text>
+				<Text style={material.body1}>
+					{'\u20B9'} {itemPrice}
+				</Text>
+				<View style={{ paddingTop: 5, paddingBottom: 10 }}>
+					<Button bordered small full onPress={() => addItem(itemId)}>
+						<Text>ADD</Text>
+					</Button>
+				</View>
+			</View>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-	gridView: {
-		marginTop: 20,
-		flex: 1,
-	},
-	itemContainer: {
-		justifyContent: 'flex-end',
-		borderRadius: 5,
-		padding: 10,
+	itemPicture: {
+		width: 150,
 		height: 150,
 	},
-	itemName: {
-		fontSize: 16,
-		color: '#fff',
-		fontWeight: '600',
-	},
-	itemCode: {
-		fontWeight: '600',
-		fontSize: 12,
-		color: '#fff',
-	},
 });
+
+const mapStateToProps = (state) => {
+	const { cart } = state;
+	return { cart };
+};
+
+export default connect(mapStateToProps)(MenuItems);

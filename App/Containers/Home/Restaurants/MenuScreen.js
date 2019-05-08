@@ -22,7 +22,7 @@ class MenuScreen extends React.Component {
 		const { navigation, restaurants } = this.props;
 		const restaurantId = navigation.getParam(
 			'restaurantId',
-			'2a294c1e-ed94-4c5a-9cee-80641001444c'
+			'c402a0ec-e7e8-412f-b159-42408f188f0e'
 		);
 		const { items } = restaurants;
 		const restaurant = items.find((e) => e.id === String(restaurantId));
@@ -34,9 +34,11 @@ class MenuScreen extends React.Component {
 		return (
 			<Container>
 				<HeaderComponent title="Menu" leftComponent={leftComponent} />
-				<Content padder>
-					<RestaurantCard restaurant={restaurant} disableArrow={true} />
-					<MenuItems />
+				<Content>
+					<View style={{ padding: 20, paddingBottom: 5 }}>
+						<RestaurantCard restaurant={restaurant} disableArrow={true} />
+					</View>
+					<MenuItems restaurantId={restaurantId} />
 				</Content>
 			</Container>
 		);

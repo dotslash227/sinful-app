@@ -24,7 +24,8 @@ function generateRestaurant() {
 
 function generateMenuItems() {
 	return {
-		itemPicture: faker.image.imageUrl(200, 200, 'food', true),
+		itemId: faker.random.uuid(),
+		itemPicture: faker.image.imageUrl(150, 150, 'food', true),
 		itemName: faker.commerce.productName(),
 		itemPrice: faker.commerce.price(),
 	};
