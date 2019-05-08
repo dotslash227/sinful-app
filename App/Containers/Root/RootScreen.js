@@ -16,6 +16,9 @@ import SignupScreen from 'App/Containers/Login/SignupScreen/SignupScreen';
 import AddressChooser from 'App/Containers/Login/AddressChooser/AddressChooser';
 // Home & Main Screens:
 import HomeScreen from 'App/Containers/Home/HomeScreen';
+import SupportPage from 'App/Containers/Home/Settings/SupportPage';
+import SettingsScreen from 'App/Containers/Home/Settings/Settings';
+
 
 // Theme:
 import { StyleProvider } from 'native-base';
@@ -38,6 +41,8 @@ const App = createAppContainer(
       Signup: SignupScreen,
       AddressChooser: AddressChooser,
       Home: HomeScreen,
+      Support: SupportPage,
+      Settings: SettingsScreen
     },
     {
       // By default the application will show the splash screen

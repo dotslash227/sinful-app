@@ -45,6 +45,11 @@ class SettingsScreen extends React.Component {
 		}
 	}
 
+	goToSupport(){
+		console.log("pressed");
+		NavigationService.navigateAndReset('Support');
+	}
+
 	render() {
 		const { user } = this.props;
 		const { profile } = user;
@@ -66,7 +71,7 @@ class SettingsScreen extends React.Component {
 								<Icon name="arrow-right" />
 							</Right>
 						</ListItem>
-						<ListItem icon>
+						<ListItem icon onPress={()=>this.goToSupport()}>
 							<Left>
 								<Icon style={styles.listIcon} name="phone-call" />
 							</Left>
