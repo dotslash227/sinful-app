@@ -8,7 +8,7 @@ export default class UserInfo extends React.Component {
 		const { profile } = this.props;
 		return (
 			<View style={styles.container}>
-				<H1 style={styles.profileName}>{profile.name}</H1>
+				<H1 style={styles.profileName}>Hi, {profile.name}</H1>
 				<H3 style={styles.profileEmail}>{profile.email}</H3>
 			</View>
 		);
