@@ -5,6 +5,7 @@ import HeaderComponent from 'App/Components/Header';
 import UserInfo from 'App/Components/Settings/UserInfo';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import NavigationService from 'App/Services/NavigationService';
 
 class SupportPage extends Component{
 
@@ -23,8 +24,8 @@ class SupportPage extends Component{
         
         return(
             <Container>
-                <Content>
-                    <HeaderComponent title="Support" back={true} />
+                <HeaderComponent title="Support" leftComponent={<Text style={{color:"grey", fontSize: 20}} onPress={()=>NavigationService.navigate("Home")}>Back</Text>} />
+                <Content>                    
                     <UserInfo profile={profile} />
                     <Text style={styles.infoText}>Welcome to Momo Now Support, the average response time for your queries is 10 minutes.</Text>
                     <View>

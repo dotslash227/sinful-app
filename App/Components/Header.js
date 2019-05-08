@@ -12,7 +12,7 @@ export default class HeaderComponent extends React.Component {
 
 	goBack(){
 		console.log("back button pressed");
-		NavigationService.navigateAndReset("Settings")
+		NavigationService.navigate("Settings")
 	}
 
 	render() {
@@ -22,7 +22,7 @@ export default class HeaderComponent extends React.Component {
 		return (
 			<Header>
 				<StatusBar barStyle="dark-content" />
-				<Left style={{ flex: 1 }}>{back ? backButton : leftComponent}</Left>
+				<Left style={{ flex: 1 }}>{leftComponent}</Left>
 				<Body style={{ flex: 1, alignItems: 'center' }}>
 					<Title>{title}</Title>
 				</Body>

@@ -47,7 +47,7 @@ class SettingsScreen extends React.Component {
 
 	goToSupport(){
 		console.log("pressed");
-		NavigationService.navigateAndReset('Support');
+		NavigationService.navigate('Support');
 	}
 
 	render() {
