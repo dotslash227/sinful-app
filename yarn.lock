@@ -5331,6 +5331,11 @@ react-native-gesture-handler@~1.0.14:
   version "3.0.0-beta.11"
   resolved "https://github.com/congnguyen91/react-native-google-places#81b98f8f572cbb564eeb419501e8581602250121"
 
+react-native-icon-badge@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-icon-badge/-/react-native-icon-badge-1.1.3.tgz#43de0c923afe4968dfcff127ec5c57057b16f787"
+  integrity sha1-Q94Mkjr+SWjfz/En7FxXBXsW94c=
+
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"

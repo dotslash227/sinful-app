@@ -1,6 +1,8 @@
 import React from 'react';
-import { Platform, Text, View, Button } from 'react-native';
-import { Container, Content, Icon } from 'native-base';
+import { Platform, Text, View, StyleSheet } from 'react-native';
+import { Container, Content, Icon, Badge } from 'native-base';
+import { connect } from 'react-redux';
+import IconBadge from 'react-native-icon-badge';
 import {
   createBottomTabNavigator,
   createAppContainer,
@@ -34,15 +36,29 @@ const TabNavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let iconName,
+          badge = <View />;
         if (routeName === 'Restaurants') {
           iconName = `home`;
         } else if (routeName === 'Cart') {
-          iconName = `layers`;
+          iconName = 'layers';
+          return (
+            <IconBadge
+              MainElement={<Icon name={iconName} size={25} style={{ color: tintColor }} />}
+              BadgeElement={<Text style={{ color: '#FFFFFF' }}>2</Text>}
+              IconBadgeStyle={{
+                width: 15,
+                height: 15,
+                backgroundColor: 'red',
+                position: 'absolute',
+              }}
+              Hidden={true}
+            />
+          );
         } else if (routeName === 'Settings') {
           iconName = `user`;
         }
-        return <Icon name={iconName} size={22} style={{ color: tintColor }} />;
+        return <Icon name={iconName} size={25} style={{ color: tintColor }} />;
       },
       header: null,
     }),
@@ -54,4 +70,39 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+const styles = StyleSheet.create({
+  badge: {
+    backgroundColor: 'red',
+    flex: 1,
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    width: 10,
+    height: 10,
+  },
+});
+
+const Navigator = createAppContainer(TabNavigator);
+
+class BaseHomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      cartItems: 0,
+    };
+  }
+
+  render() {
+    const { cart } = this.props;
+    const { cartItems } = this.state;
+    return <Navigator cartItems={cartItems} />;
+  }
+}
+
+const mapStateToProps = (state) => {
+  const { cart } = state;
+  return { cart };
+};
+
+export default connect(mapStateToProps)(BaseHomeScreen);
