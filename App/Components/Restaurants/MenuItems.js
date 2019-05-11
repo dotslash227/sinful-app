@@ -9,6 +9,7 @@ import { setRestaurantId, addItemToCart, removeItemFromCart } from 'App/Stores/C
 import { Text, Icon, Button, Grid, Col } from 'native-base';
 import { material } from 'react-native-typography';
 import { FlatGrid } from 'react-native-super-grid';
+import ClearCartDialog from 'App/Components/Cart/clearCartDialog';
 
 // Fake Data
 import menuItems from 'App/Data/fake-menu-items.json';
@@ -17,16 +18,36 @@ class MenuItems extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			showClearCartDialog: false,
+		};
+		this.showClearCart = this.showClearCart.bind(this);
+		this.hideClearCart = this.hideClearCart.bind(this);
 	}
+
+	showClearCart() {
+		this.setState({ showClearCartDialog: true });
+	}
+	hideClearCart() {
+		this.setState({ showClearCartDialog: false });
+	}
+
 	render() {
 		const { restaurantId, cart } = this.props;
+		console.log(cart);
 		return (
 			<View style={{ padding: 10 }}>
 				<FlatGrid
 					items={menuItems}
 					itemDimension={150}
-					renderItem={({ item, index }) => <SingleItem item={item} {...this.props} />}
+					renderItem={({ item, index }) => (
+						<SingleItem item={item} {...this.props} showClearCart={this.showClearCart} />
+					)}
+				/>
+				<ClearCartDialog
+					text="There are items from another Restaurant in the cart. Do you want to remove them to add this item?"
+					visible={this.state.showClearCartDialog}
+					closeDialog={this.hideClearCart}
 				/>
 			</View>
 		);
@@ -45,11 +66,11 @@ class SingleItem extends React.Component {
 			console.log('Added Item');
 		} else if (cart.items.length && cart.restaurantId !== restaurantId) {
 			// Old Items might be in Cart
-			this.props.setRestaurantId(restaurantId);
-			alert('Items already in the cart from different restaurant. Remove them?');
-			// TODO: Set Restaurant
+			this.props.showClearCart();
 		} else {
-			console.log('Nothing.');
+			this.props.setRestaurantId(restaurantId);
+			this.props.addItemToCart(item);
+			console.log('Set Restaurant ID + Added Item');
 		}
 	}
 
