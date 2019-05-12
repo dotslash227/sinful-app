@@ -15,6 +15,9 @@ import material from './../native-base-theme/variables/material';
 
 const { store, persistor } = createStore();
 
+// Disable Yellow Box:
+console.disableYellowBox = true;
+
 export default class App extends Component {
   render() {
     return (

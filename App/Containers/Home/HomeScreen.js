@@ -29,7 +29,7 @@ const TabNavigator = createBottomTabNavigator(
     Settings: SettingsStack,
   },
   {
-    initialRouteName: 'Restaurants',
+    initialRouteName: 'Cart',
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
