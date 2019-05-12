@@ -67,25 +67,33 @@ class CartScreen extends React.Component {
 		const { calculatedBill, loading } = this.state;
 		const { cart } = this.props;
 		if (loading) return <Spinner />;
-		let mainContent;
-		if (!cart.items || !cart.items.length || !cart.restaurantId)
+		let mainContent,
+			isCartEmpty = true;
+		if (!cart.items || !cart.items.length || !cart.restaurantId) {
+			isCartEmpty = true;
 			mainContent = <EmptyCart goToHomeScreen={this.goToHomeScreen} />;
-		else
+		} else {
+			isCartEmpty = false;
 			mainContent = (
 				<Content padder>
 					<CartItems removeItem={this.removeItem} />
 					<CartTotal calculatedBill={calculatedBill} />
 				</Content>
 			);
+		}
 		return (
 			<Container>
 				<HeaderComponent title="Cart" />
 				{mainContent}
-				<Button full block>
-					<Text style={{ color: 'white' }}>
-						Pay {'\u20B9'} {calculatedBill.total}
-					</Text>
-				</Button>
+				{isCartEmpty ? (
+					<View />
+				) : (
+					<Button full block>
+						<Text style={{ color: 'white' }}>
+							Pay {'\u20B9'} {calculatedBill.total}
+						</Text>
+					</Button>
+				)}
 			</Container>
 		);
 	}
