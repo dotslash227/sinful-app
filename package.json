@@ -1,6 +1,6 @@
 {
   "name": "sinful",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -16,7 +16,8 @@
     "android:reload": "adb shell input text 'RR'",
     "devtools": "adb reverse tcp:8097 tcp:8097 && react-devtools &",
     "postinstall": "patch-package",
-    "abhishek:android": "adb devices && adb -s ZY322DDWPJ reverse tcp:8081 tcp:8081 && react-native run-android"
+    "abhishek:android": "adb devices && adb -s ZY322DDWPJ reverse tcp:8081 tcp:8081 && react-native run-android",
+    "postversion": "react-native-version"
   },
   "dependencies": {
     "apisauce": "^1.0.2",
@@ -39,6 +40,7 @@
     "react-native-super-grid": "^3.0.4",
     "react-native-typography": "^1.4.0",
     "react-native-vector-icons": "^6.4.2",
+    "react-native-version": "^3.1.0",
     "react-navigation": "3.1.2",
     "react-redux": "6.0.0",
     "redux": "^4.0.1",
