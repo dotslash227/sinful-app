@@ -8,11 +8,12 @@ export default class SpinnerView extends Component {
   }
 
   render() {
+    const { text } = this.props;
     return (
       <Container styles={styles.screen}>
         <Content style={styles.marginCheck}>
           <Spinner />
-            <Text style={styles.text}>Please wait while we are preparing some awesome momo chutneys for you</Text>
+          <Text style={styles.text}>{text}</Text>
         </Content>
       </Container>
     );
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   text: {
-    color: 'rgba(226,62,87,1)',
     textAlign: 'center',
   },
 });
