@@ -12,7 +12,7 @@ function getCurrentUser() {
 	return firebase.auth().currentUser;
 }
 
-export async function logoutCurrentUser() {
+async function logoutCurrentUser() {
 	try {
 		const logout = await firebase.auth().signOut();
 		return true;
@@ -22,7 +22,7 @@ export async function logoutCurrentUser() {
 	}
 }
 
-export async function getUserProfile() {
+async function getUserProfile() {
 	try {
 		const { uid } = getCurrentUser();
 		const getUser = await db
@@ -52,7 +52,7 @@ async function createEmptyUserProfile(id) {
 	}
 }
 
-export async function updateProfileDetails({ name, email }) {
+async function updateProfileDetails({ name, email }) {
 	try {
 		const { uid } = getCurrentUser();
 		const updateObj = {
@@ -67,7 +67,7 @@ export async function updateProfileDetails({ name, email }) {
 	}
 }
 
-export async function addAddressToProfile(address) {
+async function addAddressToProfile(address) {
 	try {
 		const isValid = validateAddress(address);
 		if (!isValid) throw new Error('InvalidAddress');
@@ -88,3 +88,11 @@ export async function addAddressToProfile(address) {
 	}
 	// TODO: Upload Address and Update State
 }
+
+export {
+	getCurrentUser,
+	logoutCurrentUser,
+	getUserProfile,
+	updateProfileDetails,
+	addAddressToProfile,
+};
