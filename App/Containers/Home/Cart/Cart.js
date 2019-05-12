@@ -14,9 +14,13 @@ import HeaderComponent from 'App/Components/Header';
 import EmptyCart from 'App/Components/Cart/EmptyCart';
 import CartItems from 'App/Components/Cart/CartItems';
 import CartTotal from 'App/Components/Cart/CartTotal';
+import { showMessage } from 'react-native-flash-message';
 
 // Lib
 import { calculateBill } from 'App/Lib/Cart/bill';
+import { getCurrentUser } from 'App/Lib/Users';
+import RazorpayCheckout from 'react-native-razorpay';
+import commonLib from 'App/Lib/common';
 
 class CartScreen extends React.Component {
 	constructor(props) {
@@ -63,6 +67,40 @@ class CartScreen extends React.Component {
 		this.setState({ loading: false });
 	}
 
+	async payButton() {
+		const { calculatedBill } = this.state;
+		const { user } = this.props;
+		const { phoneNumber } = getCurrentUser();
+		const { total } = calculatedBill;
+		const razorPayAmount = total * 100;
+		// Options : https://razorpay.com/docs/payment-gateway/integrations-guide/checkout/standard/
+		var options = {
+			description: 'MomosNow Order',
+			//image: 'https://i.imgur.com/3g7nmJC.png',
+			currency: 'INR',
+			key: 'rzp_test_Pi8XwISSA72vyS',
+			amount: razorPayAmount,
+			name: 'MomosNow',
+			prefill: {
+				email: user.profile.email,
+				contact: phoneNumber,
+				name: user.profile.name,
+			},
+			theme: { color: '#ea5455' },
+		};
+		console.log({ options });
+		try {
+			const payment = await RazorpayCheckout.open(options);
+			console.log({ payment });
+		} catch (e) {
+			commonLib.report(e);
+			showMessage({
+				message: 'Something went wrong',
+				type: 'danger',
+			});
+		}
+	}
+
 	render() {
 		const { calculatedBill, loading } = this.state;
 		const { cart } = this.props;
@@ -88,7 +126,7 @@ class CartScreen extends React.Component {
 				{isCartEmpty ? (
 					<View />
 				) : (
-					<Button full block>
+					<Button full block onPress={() => this.payButton()}>
 						<Text style={{ color: 'white' }}>
 							Pay {'\u20B9'} {calculatedBill.total}
 						</Text>

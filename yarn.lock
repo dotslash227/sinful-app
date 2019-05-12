@@ -5426,6 +5426,11 @@ react-native-permissions@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
   integrity sha512-t0Ujm177bagjUOSzhpmkSz+LqFW04HnY9TeZFavDCmV521fQvFz82aD+POXqWsAdsJVOK3umJYBNNqCjC3g0hQ==
 
+react-native-razorpay@^2.1.23:
+  version "2.1.23"
+  resolved "https://registry.yarnpkg.com/react-native-razorpay/-/react-native-razorpay-2.1.23.tgz#396e91e0b5f199c0694d4dca533e892d9b855f4e"
+  integrity sha512-8GZcKDU5cSl0TWeaZLRMh0w1ikLdjJD1Z8lLFroy8JIUAyFxk8zzQoD09uaok67UfsLM1TFphkz7/cUkJeR7mg==
+
 react-native-rename@^2.2.2:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-rename/-/react-native-rename-2.4.0.tgz#b6e9f9867306355d7056f64ec54741f9523d9057"

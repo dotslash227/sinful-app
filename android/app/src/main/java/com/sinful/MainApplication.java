@@ -3,6 +3,7 @@ package com.sinful;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.razorpay.rn.RazorpayPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RazorpayPackage(),
             new RNGestureHandlerPackage(),
             new RNGooglePlacesPackage(),
             new RNFirebasePackage(),
