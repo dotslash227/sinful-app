@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform, Text, View } from 'react-native';
+// Redux
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { removeItemFromCart } from 'App/Stores/Cart/Actions';
+
 import { Container, Content, Icon, Button } from 'native-base';
 import NavigationService from 'App/Services/NavigationService';
 
@@ -27,6 +31,7 @@ class CartScreen extends React.Component {
 			},
 		};
 		this.goToHomeScreen = this.goToHomeScreen.bind(this);
+		this.removeItem = this.removeItem.bind(this);
 	}
 
 	goToHomeScreen(screenName = null) {
@@ -34,8 +39,23 @@ class CartScreen extends React.Component {
 		if (screenName) this.props.navigation.navigate(screenName);
 	}
 
+	removeItem(itemId) {
+		console.log({ props: this.props });
+		this.props.removeItemFromCart(itemId);
+	}
+
 	async componentDidMount() {
 		const { cart } = this.props;
+		if (cart && cart.items && cart.items.length) {
+			const calculatedBill = await calculateBill({ cartItems: cart.items });
+			this.setState({ calculatedBill });
+		}
+		this.setState({ loading: false });
+	}
+
+	async componentWillReceiveProps(nextProps) {
+		this.setState({ loading: true });
+		const { cart } = nextProps;
 		if (cart && cart.items && cart.items.length) {
 			const calculatedBill = await calculateBill({ cartItems: cart.items });
 			this.setState({ calculatedBill });
@@ -53,7 +73,7 @@ class CartScreen extends React.Component {
 		else
 			mainContent = (
 				<Content padder>
-					<CartItems />
+					<CartItems removeItem={this.removeItem} />
 					<CartTotal calculatedBill={calculatedBill} />
 				</Content>
 			);
@@ -76,15 +96,15 @@ const mapStateToProps = (state) => {
 	return { user, cart };
 };
 
-/*const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      loginUser,
-    },
-    dispatch
-  );*/
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(
+		{
+			removeItemFromCart,
+		},
+		dispatch
+	);
 
 export default connect(
-	mapStateToProps
-	//mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(CartScreen);

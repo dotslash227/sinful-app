@@ -20,7 +20,7 @@ class CartItems extends React.Component {
 		return (
 			<List>
 				{items.map((item) => {
-					return <SingleItem key={item.itemId} item={item} />;
+					return <SingleItem key={item.itemId} item={item} removeItem={this.props.removeItem} />;
 				})}
 			</List>
 		);
@@ -29,7 +29,7 @@ class CartItems extends React.Component {
 
 class SingleItem extends React.Component {
 	render() {
-		const { item } = this.props;
+		const { item, removeItem } = this.props;
 		const { itemPicture, itemId, itemName, itemPrice } = item;
 		return (
 			<ListItem thumbnail>
@@ -43,7 +43,7 @@ class SingleItem extends React.Component {
 					</Text>
 				</Body>
 				<Right>
-					<Button transparent>
+					<Button transparent onPress={() => removeItem(itemId)}>
 						<Icon name="minus-square" />
 					</Button>
 				</Right>

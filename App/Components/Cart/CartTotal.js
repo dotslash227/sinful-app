@@ -30,7 +30,6 @@ class CartTotal extends React.Component {
 				isTotal: true,
 			},
 		];
-		console.log(bill);
 		return (
 			<List style={{ paddingTop: 10, paddingBottom: 10 }}>
 				{bill.map(({ name, price, isTotal }) => {
