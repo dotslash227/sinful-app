@@ -50,6 +50,10 @@ class SettingsScreen extends React.Component {
 		NavigationService.navigate('Support');
 	}
 
+	goToAddresses(){
+		NavigationService.navigate("AddressPage");
+	}
+
 	render() {
 		const { user } = this.props;
 		const { profile } = user;
@@ -60,7 +64,7 @@ class SettingsScreen extends React.Component {
 				<UserInfo profile={profile} />
 				<Content>
 					<List>
-						<ListItem icon>
+						<ListItem icon onPress={()=>this.goToAddresses()}>
 							<Left>
 								<Icon style={styles.listIcon} name="align-right" />
 							</Left>
