@@ -24,7 +24,7 @@ class SupportPage extends Component{
         
         return(
             <Container>
-                <HeaderComponent title="Support" leftComponent={<Text style={{color:"grey", fontSize: 20}} onPress={()=>NavigationService.navigate("Home")}>Back</Text>} />
+                <HeaderComponent title="Support" leftComponent={true} />
                 <Content>                    
                     <UserInfo profile={profile} />
                     <Text style={styles.infoText}>Welcome to Momo Now Support, the average response time for your queries is 10 minutes.</Text>

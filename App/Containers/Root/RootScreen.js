@@ -18,6 +18,8 @@ import AddressChooser from 'App/Containers/Login/AddressChooser/AddressChooser';
 import HomeScreen from 'App/Containers/Home/HomeScreen';
 import SupportPage from 'App/Containers/Home/Settings/SupportPage';
 import SettingsScreen from 'App/Containers/Home/Settings/Settings';
+import AddressPage from 'App/Containers/Home/Settings/Address/Addresses';
+import AddAddress from 'App/Containers/Home/Settings/Address/Add'
 
 
 // Theme:
@@ -42,7 +44,9 @@ const App = createAppContainer(
       AddressChooser: AddressChooser,
       Home: HomeScreen,
       Support: SupportPage,
-      Settings: SettingsScreen
+      Settings: SettingsScreen,
+      AddressPage: AddressPage, 
+      AddAddress: AddAddress
     },
     {
       // By default the application will show the splash screen

@@ -6,7 +6,6 @@ import NavigationService from 'App/Services/NavigationService';
 export default class HeaderComponent extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {};
 	}
 
@@ -16,13 +15,16 @@ export default class HeaderComponent extends React.Component {
 	}
 
 	render() {
+		let where = (this.props.where) ? this.props.where : "Home"
 		const { title, subtitle, leftComponent, rightComponent, back } = this.props;
-		const backButton = <Text style={{color:"grey", fontSize: 20}} onPress={()=>this.goBack()}>Back</Text>;
-		const subtitleComponent = subtitle ? <Subtitle>{subtitle}</Subtitle> : null;
+		const backButton = <Text style={{color:"grey", fontSize: 20}} onPress={()=>NavigationService.navigate(where)}>Back</Text>;
+		const subtitleComponent = subtitle ? <Subtitle>{subtitle}</Subtitle> : null;		
 		return (
 			<Header>
 				<StatusBar barStyle="dark-content" />
-				<Left style={{ flex: 1 }}>{leftComponent}</Left>
+				<Left style={{ flex: 1 }}>
+					{leftComponent?backButton:subtitleComponent}
+				</Left>
 				<Body style={{ flex: 1, alignItems: 'center' }}>
 					<Title>{title}</Title>
 				</Body>
