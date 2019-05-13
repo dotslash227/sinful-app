@@ -33,9 +33,10 @@ const TabNavigator = createBottomTabNavigator(
     navigationOptions: ({ navigation }) => ({
       header: null,
     }),
-    defaultNavigationOptions: ({ navigation }) => ({
+    defaultNavigationOptions: ({ navigation, screenProps }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
+        const { cartItems } = screenProps;
         let iconName,
           badge = <View />;
         if (routeName === 'Restaurants') {
@@ -45,14 +46,14 @@ const TabNavigator = createBottomTabNavigator(
           return (
             <IconBadge
               MainElement={<Icon name={iconName} size={25} style={{ color: tintColor }} />}
-              BadgeElement={<Text style={{ color: '#FFFFFF' }}>2</Text>}
+              BadgeElement={<Text style={{ color: '#FFFFFF' }}>{cartItems}</Text>}
               IconBadgeStyle={{
                 width: 15,
                 height: 15,
                 backgroundColor: 'red',
                 position: 'absolute',
               }}
-              Hidden={true}
+              Hidden={cartItems === 0 ? true : false}
             />
           );
         } else if (routeName === 'Settings') {
@@ -93,10 +94,31 @@ class BaseHomeScreen extends React.Component {
     };
   }
 
+  setItemsCounter(props) {
+    const { cart } = props;
+    const { items } = cart;
+    this.setState({ cartItems: items.length });
+  }
+
+  componentDidMount() {
+    const props = this.props;
+    this.setItemsCounter(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setItemsCounter(nextProps);
+  }
+
   render() {
-    const { cart } = this.props;
     const { cartItems } = this.state;
-    return <Navigator cartItems={cartItems} />;
+    return (
+      <Navigator
+        cartItems={cartItems}
+        screenProps={{
+          cartItems,
+        }}
+      />
+    );
   }
 }
 

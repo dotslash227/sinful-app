@@ -32,10 +32,10 @@ class CartTotal extends React.Component {
 		];
 		return (
 			<List style={{ paddingTop: 10, paddingBottom: 10 }}>
-				{bill.map(({ name, price, isTotal }) => {
+				{bill.map(({ name, price, isTotal }, index) => {
 					const textStyle = isTotal ? material.body2 : material.body1;
 					return (
-						<ListItem icon>
+						<ListItem icon key={index}>
 							<Body>
 								<Text style={textStyle}>{name}</Text>
 							</Body>

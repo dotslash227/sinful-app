@@ -49,17 +49,17 @@ class CartScreen extends React.Component {
 	}
 
 	async componentDidMount() {
-		const { cart } = this.props;
-		if (cart && cart.items && cart.items.length) {
-			const calculatedBill = await calculateBill({ cartItems: cart.items });
-			this.setState({ calculatedBill });
-		}
-		this.setState({ loading: false });
+		const props = this.props;
+		this.setCalculatedBill(props);
 	}
 
 	async componentWillReceiveProps(nextProps) {
+		this.setCalculatedBill(nextProps);
+	}
+
+	async setCalculatedBill(props) {
 		this.setState({ loading: true });
-		const { cart } = nextProps;
+		const { cart } = props;
 		if (cart && cart.items && cart.items.length) {
 			const calculatedBill = await calculateBill({ cartItems: cart.items });
 			this.setState({ calculatedBill });
@@ -93,9 +93,11 @@ class CartScreen extends React.Component {
 			const payment = await RazorpayCheckout.open(options);
 			console.log({ payment });
 		} catch (e) {
-			commonLib.report(e);
+			console.log(e);
+			let message = 'Something went wrong';
+			if (e.code === 0) message = 'Payment was Cancelled';
 			showMessage({
-				message: 'Something went wrong',
+				message: message,
 				type: 'danger',
 			});
 		}

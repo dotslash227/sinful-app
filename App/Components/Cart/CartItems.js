@@ -19,8 +19,9 @@ class CartItems extends React.Component {
 		const { items } = cart;
 		return (
 			<List>
-				{items.map((item) => {
-					return <SingleItem key={item.itemId} item={item} removeItem={this.props.removeItem} />;
+				{items.map((item, index) => {
+					const key = `${item.itemId}-${index}`;
+					return <SingleItem key={key} item={item} removeItem={this.props.removeItem} />;
 				})}
 			</List>
 		);
